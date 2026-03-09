@@ -33,10 +33,11 @@ class Mass_IP_Scanner():
     # ARGS
     country = False
     asn     = False
-    lookup  = False 
+    lookup  = False
 
     all     = False
     save    = False
+    bloom_size = 100000000
 
 
     # MODES
@@ -49,12 +50,12 @@ class Mass_IP_Scanner():
 
 
     # IPS
-    #total_ips        = 0 
+    #total_ips        = 0
     total_blocks     = []
     ips_from_block   = 0
     current_block    = False
     blocks_done      = 0
-    bf_all = BloomFilter(capacity=100000000, error_rate=0.001)
+    bf_all = None
 
 
 
@@ -142,7 +143,10 @@ class Mass_IP_Scanner():
                 """
                  
 
-            else: 
+            else:
+
+                if cls.bf_all is None:
+                    cls.bf_all = BloomFilter(capacity=cls.bloom_size, error_rate=0.001)
 
                 random_ip = (f"{random.randint(0,255)}.{random.randint(0,255)}.{random.randint(0,255)}.{random.randint(0,255)}")
 
@@ -253,7 +257,10 @@ class Mass_IP_Scanner():
 
                     sys.exit()
 
-                except KeyboardInterrupt as e: console.print("[bold red][-] Killing ALL Threds...."); cls.scan=False; exit()
+                except KeyboardInterrupt as e:
+                    console.print("[bold red][-] Killing ALL Threads...."); cls.scan=False
+                    executor.shutdown(wait=False, cancel_futures=True)
+                    exit()
                 except Exception as e: console.print(f"[bold red]Exception Error:[bold yellow] {e}"); cls.scan=False; exit()
 
 
@@ -273,7 +280,7 @@ class Mass_IP_Scanner():
         if cls.save:    File_Saver.push_ips_found(data=False, CONSOLE=console)
         if cls.asn:     data, cls.blocks = Database.get_asn(country=cls.country, asns=cls.asn)
 
-        Database.get_total_ips(blocks=cls.blocks)
+        if cls.country: Database.get_total_ips(blocks=cls.blocks)
 
         if not port:
             port = console.input("\n[bold yellow]Enter port to mass scan for!: ") or 80

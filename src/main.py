@@ -54,8 +54,9 @@ class Main():
 
     parser.add_argument("--country", help="Only create IP Blocks within x Country")
     parser.add_argument("--asn", help="Pass asn value(s) Example: 215892, 214735, 214145, 213727, 212056")
- 
-    parser.add_argument("--geo", choices=["local", "ipinfo"], help="Enable IP geolocation lookup.")  
+    parser.add_argument("--bloom-size", help="BloomFilter capacity for global scans (default: 100000000). Warning: Higher values use more memory.")
+
+    parser.add_argument("--geo", choices=["local", "ipinfo"], help="Enable IP geolocation lookup.")
     parser.add_argument("--ipinfo", help="Optional ipinfo.io API key. Defaults to none.")
 
     parser.add_argument("--iot",    action="store_true", help="Scan for IoT devices (MQTT, CoAP, mDNS).")
@@ -85,11 +86,16 @@ class Main():
     # ADDITIONS
     country        = args.country     or False
     asn            = args.asn         or False
+    bloom_size     = int(args.bloom_size) if args.bloom_size else 100000000
     lookup         = args.geo         or False
     api_key_ipinfo = args.ipinfo      or False
     save           = args.save        or False
 
-
+    # WARNING
+    if not country:
+        console.print("\n[bold red][!] WARNING:[/bold red] [bold yellow]Scanning without --country will use a 100M BloomFilter limit.")
+        console.print("[bold yellow]    After 100M IPs, duplicates may be scanned. Use --country for memory-efficient scanning.")
+        console.print("[bold yellow]    Or increase with --bloom-size (e.g., --bloom-size 500000000) but this uses more RAM.\n")
 
     # PRESET OPTIONS
     iot      = args.iot        or False
@@ -110,6 +116,7 @@ class Main():
     Mass_IP_Scanner.asn     = asn
     Mass_IP_Scanner.all     = all
     Mass_IP_Scanner.save    = save
+    Mass_IP_Scanner.bloom_size = bloom_size
 
 
     # ASSIGN PRESETS

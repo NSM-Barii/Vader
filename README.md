@@ -65,9 +65,10 @@ sudo venv/bin/python main.py --country Iran -p 8080 --save
 ```
 -p PORT              Port(s) to scan (comma-separated)
 -t THREADS           Max threads (default: 250)
---save               Save active IPs to database/ips.txt
+--save               Save active IPs to database/saved_ips
 --country NAME       Target country (e.g., Iran, China, Russia)
 --asn NUMBER         Filter by ASN within country
+--bloom-size SIZE    BloomFilter capacity for global scans (default: 100000000)
 --show-all           Display all active IPs found
 ```
 
