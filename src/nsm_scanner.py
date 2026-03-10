@@ -238,7 +238,7 @@ class Mass_IP_Scanner():
                 
                     while cls.scan:
 
-                        if len(futures) < max_workers: 
+                        while len(futures) < max_workers: 
 
                             future = executor.submit(Mass_IP_Scanner._random_ip_validator, portz, timeout)
                             futures.add(future)
