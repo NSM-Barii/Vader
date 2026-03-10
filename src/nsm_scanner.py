@@ -265,7 +265,7 @@ class Mass_IP_Scanner():
                             console.print(f"\n[bold yellow][!] Reinitializing at {cls.scanned_ips} IPs...")
                             cls.scan = False
                             time.sleep(5)
-                            break
+                            return False
 
                     sys.exit()
 
