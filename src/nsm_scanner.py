@@ -12,6 +12,7 @@ import pyfiglet
 
 # NETWORK IMPORTS
 import ipaddress, socket, requests
+from scapy.all import IP, TCP, sr1
 
 
 # ETC IMPORTS
@@ -187,10 +188,12 @@ class Mass_IP_Scanner():
                 
 
                 for port in ports:
+                    #pkt = IP(dst=ip)/TCP(dport=port, flags="S")
+                    #result = sr1(pkt, timeout=timeout, verbose=0)
                     s.settimeout(timeout)
                     result = s.connect_ex((ip, int(port)))
 
-                    if result == 0:
+                    if result == 0: #and result.haslayer(TCP) and result[TCP].flags == 0x12:
                          
                         with LOCK: 
                             if cls.save: cls.current_ips.append(ip)
@@ -251,8 +254,8 @@ class Mass_IP_Scanner():
                                 cls.current_ips = []
    
 
-                        done = {f for f in futures if f.done()}
-                        futures -= done
+                        futures = {f for f in futures if not f.done()}
+                        #futures -= done
                     
 
                     sys.exit()
