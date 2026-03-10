@@ -229,7 +229,7 @@ class Mass_IP_Scanner():
         try: portz  = [int(port) for port in ports.split(',')]
         except Exception: portz = list(ports)
         
-        console.print("\n[bold green][*] Thread Pool started")
+        #console.print("[bold green][*] Thread Pool initilized!")
 
     
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
@@ -257,8 +257,8 @@ class Mass_IP_Scanner():
                             cls.current_ips = []
 
                     # Reinit every 100k to prevent hanging
-                    if cls.scanned_ips > 0 and cls.last_scan > 100000:
-                        console.print(f"\n[bold yellow][!] Reinitializing ThreadPool at: {cls.scanned_ips} IPs...")
+                    if cls.scanned_ips > 0 and cls.last_scan > 250000:
+                        console.print(f"\n[bold yellow][!] Reinitializing ThreadPool!")
                         cls.scan = False
                         time.sleep(5)
                         return False
