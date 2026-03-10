@@ -222,6 +222,7 @@ class Mass_IP_Scanner():
 
         futures = []
         count = 0
+        last_save = time.time()
         panel = Panel(renderable="[bold red]Mass IP Scanner", border_style="bold purple", expand=False)
 
 
