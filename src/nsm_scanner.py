@@ -122,6 +122,7 @@ class Mass_IP_Scanner():
 
                 
                 with LOCK:
+                    cls.last_scan = time.time()
                     return Mass_IP_Scanner._track_ip_blocks()
 
 
@@ -144,22 +145,23 @@ class Mass_IP_Scanner():
                  
 
             else:
+                
+                with LOCK:
+                    if cls.bf_all is None:
+                        cls.bf_all = BloomFilter(capacity=cls.bloom_size, error_rate=0.001)
 
-                if cls.bf_all is None:
-                    cls.bf_all = BloomFilter(capacity=cls.bloom_size, error_rate=0.001)
+                    random_ip = (f"{random.randint(0,255)}.{random.randint(0,255)}.{random.randint(0,255)}.{random.randint(0,255)}")
 
-                random_ip = (f"{random.randint(0,255)}.{random.randint(0,255)}.{random.randint(0,255)}.{random.randint(0,255)}")
+                    if random_ip in cls.bf_all: return False
+                    cls.bf_all.add(random_ip); cls.scanned_ips += 1
 
-                if random_ip in cls.bf_all: return False
-                cls.bf_all.add(random_ip); cls.scanned_ips += 1
+                    if verbose: console.print(f"[bold green]Generated IP:[bold yellow] {random_ip}")
 
-                if verbose: console.print(f"[bold green]Generated IP:[bold yellow] {random_ip}")
-
-                return str(random_ip)
+                    return str(random_ip)
 
 
 
-        except Exception as e: print(e); return False
+        except Exception as e: console.print(f"[bold red]Exception Error:[bold yellow] {e}"); return False
  
   
     @classmethod
@@ -217,7 +219,8 @@ class Mass_IP_Scanner():
         c4 = "bold green"
         c5 = "white"
 
-        futures = set()
+
+        futures = []
         last_save = time.time()
         panel = Panel(renderable="[bold red]Mass IP Scanner", border_style="bold purple", expand=False)
 
@@ -227,9 +230,8 @@ class Mass_IP_Scanner():
 
         try: portz  = [int(port) for port in ports.split(',')]
         except Exception: portz = list(ports)
-        t = 0
-
-
+        
+        console.print("\n[bold green][*] Thread Pool started")
 
         with Live(panel, console=console, refresh_per_second=4):
             with ThreadPoolExecutor(max_workers=max_workers) as executor:
@@ -238,24 +240,30 @@ class Mass_IP_Scanner():
 
                     while cls.scan:
 
-                        # Submit batch of futures
-                        batch = [executor.submit(Mass_IP_Scanner._random_ip_validator, portz, timeout) for _ in range(max_workers)]
+                        
+                        while len(futures) < max_workers and cls.scan:
+                            futures.append(executor.submit(Mass_IP_Scanner._random_ip_validator, portz, timeout))
 
-                        # Process as they complete
-                        for future in as_completed(batch):
-                            if not cls.scan:
-                                break
 
-                            # Update display
-                            if Database.country:  panel.renderable = (f"[{c1}]Filter: [{c2}]{Database.country}  -  [{c1}]Active IPs: [{c2}]{cls.online_ips} / {cls.scanned_ips}  -  [{c1}]Port(s): [{c2}]{portz}  -  [{c1}]Max Workers:[{c2}] {max_workers}  -  [{c1}]Errors:[{c2}] {Database.errors}  -  Developed by NSM Barii")
-                            else: panel.renderable = (f"[{c1}]Active IPs: [{c2}]{cls.online_ips} / {cls.scanned_ips}  -  [{c1}]Port(s): [{c2}]{portz}  -  [{c1}]Max Workers:[{c2}] {max_workers}  -  [{c1}]Errors:[{c2}] {Database.errors}  -  Developed by NSM Barii")
+                        futures = [f for f in futures if not f.done()]  
 
-                            # Save IPs periodically
-                            if time.time() - last_save > 5 and cls.save:
-                                with LOCK:
-                                    File_Saver.push_ips_found(data=cls.current_ips, CONSOLE=console, verbose=False)
-                                    last_save = time.time()
-                                    cls.current_ips = []
+   
+                        if Database.country:  panel.renderable = (f"[{c1}]Filter: [{c2}]{Database.country}  -  [{c1}]Active IPs: [{c2}]{cls.online_ips} / {cls.scanned_ips}  -  [{c1}]Port(s): [{c2}]{portz}  -  [{c1}]Max Workers:[{c2}] {max_workers}  -  [{c1}]Errors:[{c2}] {Database.errors}  -  Developed by NSM Barii")
+                        else: panel.renderable = (f"[{c1}]Active IPs: [{c2}]{cls.online_ips} / {cls.scanned_ips}  -  [{c1}]Port(s): [{c2}]{portz}  -  [{c1}]Max Workers:[{c2}] {max_workers}  -  [{c1}]Errors:[{c2}] {Database.errors}  -  Developed by NSM Barii")
+
+
+                        if time.time() - last_save > 5 and cls.save:
+                            with LOCK:
+                                File_Saver.push_ips_found(data=cls.current_ips, CONSOLE=console, verbose=False)
+                                last_save = time.time()
+                                cls.current_ips = []
+
+                        # Reinit every 100k to prevent hanging
+                        if cls.scanned_ips > 0 and cls.scanned_ips % 100000 == 0:
+                            console.print(f"\n[bold yellow][!] Reinitializing at {cls.scanned_ips} IPs...")
+                            cls.scan = False
+                            time.sleep(5)
+                            break
 
                     sys.exit()
 
@@ -264,6 +272,30 @@ class Mass_IP_Scanner():
                     executor.shutdown(wait=False, cancel_futures=True)
                     exit()
                 except Exception as e: console.print(f"[bold red]Exception Error:[bold yellow] {e}"); cls.scan=False; exit()
+
+    
+    @classmethod
+    def _thread_handler(cls):
+        """This method will be a mainter for _ip_threader()"""
+
+        # OK SO OVER THE COURSE OF THE LAST COUPLE DAYS I HAVE BEEN RUNNING INTO A ISSUE WHERE I CAN SCAN A COUPLE MILLION IPS BUT AFTER A WHILE
+        # THE THREADS GET CLOGGED AND STOP SCANNING WHICH IS A ISSUE
+        # SO I WILL BE CREATING THIS METHOD WITH THE GOAL TO HAVE THIS BE A MAINTER RESPONSIBLE FOR KILLING THE THREADPOOL AND CREATING A NEW ON
+
+
+        while True:
+
+            current = time.time() - cls.last_scan
+
+            if current > 30:
+
+                console.print(f"[bold red][!] No progress detected reinitializing ThreadPool! ")
+
+                cls.scan = False
+                time.sleep(2)
+                
+
+
 
 
     @classmethod
@@ -275,6 +307,7 @@ class Mass_IP_Scanner():
         cls.scanned_ips = 0 
         cls.online_ips  = 0
         cls.current_ips = []
+        cls.last_scan   = time.time()
 
         
         print("\n")
@@ -290,8 +323,9 @@ class Mass_IP_Scanner():
         
 
 
-        time.sleep(2)
-        Mass_IP_Scanner._ip_threader(ports=port, max_workers=threads or 250)
+        while True:
+            Mass_IP_Scanner._ip_threader(ports=port, max_workers=threads or 250)
+            cls.scan = True
 
 
 
