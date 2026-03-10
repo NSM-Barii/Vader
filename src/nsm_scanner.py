@@ -95,9 +95,9 @@ class Mass_IP_Scanner():
 
             random_ip = ipaddress.IPv4Address(random.randint(int(network.network_address), int(network.broadcast_address)))
 
-
+            cls.last_scan += 1
             if random_ip in cls.bf: return False
-
+            
             cls.bf.add(random_ip)
             cls.ips_from_block -= 1; cls.scanned_ips += 1
 
@@ -122,7 +122,6 @@ class Mass_IP_Scanner():
 
                 
                 with LOCK:
-                    cls.last_scan = time.time()
                     return Mass_IP_Scanner._track_ip_blocks()
 
 
@@ -209,7 +208,7 @@ class Mass_IP_Scanner():
     
    
     @classmethod
-    def _ip_threader(cls, ports, max_workers=250, timeout=1):
+    def _ip_threader(cls, ports, panel, max_workers=250, timeout=1):
         """This will start a multi-proccess thread"""
 
         # COLORS
@@ -221,9 +220,7 @@ class Mass_IP_Scanner():
 
 
         futures = []
-        count = 0
         last_save = time.time()
-        panel = Panel(renderable="[bold red]Mass IP Scanner", border_style="bold purple", expand=False)
 
 
         try: max_workers = int(max_workers)
@@ -234,48 +231,47 @@ class Mass_IP_Scanner():
         
         console.print("\n[bold green][*] Thread Pool started")
 
-        with Live(panel, console=console, refresh_per_second=4):
-            with ThreadPoolExecutor(max_workers=max_workers) as executor:
-
-                try:
-
-                    while cls.scan:
-
-                        
-                        while len(futures) < max_workers and cls.scan:
-                            count += 1
-                            futures.append(executor.submit(Mass_IP_Scanner._random_ip_validator, portz, timeout))
-
-
-                        futures = [f for f in futures if not f.done()]  
-
-   
-                        if Database.country:  panel.renderable = (f"[{c1}]Filter: [{c2}]{Database.country}  -  [{c1}]Active IPs: [{c2}]{cls.online_ips} / {cls.scanned_ips}  -  [{c1}]Port(s): [{c2}]{portz}  -  [{c1}]Max Workers:[{c2}] {max_workers}  -  [{c1}]Errors:[{c2}] {Database.errors}  -  Developed by NSM Barii")
-                        else: panel.renderable = (f"[{c1}]Active IPs: [{c2}]{cls.online_ips} / {cls.scanned_ips}  -  [{c1}]Port(s): [{c2}]{portz}  -  [{c1}]Max Workers:[{c2}] {max_workers}  -  [{c1}]Errors:[{c2}] {Database.errors}  -  Developed by NSM Barii")
-
-
-                        if time.time() - last_save > 5 and cls.save:
-                            with LOCK:
-                                File_Saver.push_ips_found(data=cls.current_ips, CONSOLE=console, verbose=False)
-                                last_save = time.time()
-                                cls.current_ips = []
-
-                        # Reinit every 100k to prevent hanging
-                        if cls.scanned_ips > 0 and count > 100000:
-                            console.print(f"\n[bold yellow][!] Reinitializing at {cls.scanned_ips} IPs...")
-                            cls.scan = False
-                            time.sleep(5)
-                            return False
-
-                    sys.exit()
-
-                except KeyboardInterrupt as e:
-                    console.print("[bold red][-] Killing ALL Threads...."); cls.scan=False
-                    executor.shutdown(wait=False, cancel_futures=True)
-                    exit()
-                except Exception as e: console.print(f"[bold red]Exception Error:[bold yellow] {e}"); cls.scan=False; exit()
-
     
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+
+            try:
+
+                while cls.scan:
+
+                    
+                    while len(futures) < max_workers and cls.scan:
+                        futures.append(executor.submit(Mass_IP_Scanner._random_ip_validator, portz, timeout))
+
+
+                    futures = [f for f in futures if not f.done()]  
+
+
+                    if Database.country:  panel.renderable = (f"[{c1}]Filter: [{c2}]{Database.country}  -  [{c1}]Active IPs: [{c2}]{cls.online_ips} / {cls.scanned_ips}  -  [{c1}]Port(s): [{c2}]{portz}  -  [{c1}]Max Workers:[{c2}] {max_workers}  -  [{c1}]Errors:[{c2}] {Database.errors}  -  Developed by NSM Barii")
+                    else: panel.renderable = (f"[{c1}]Active IPs: [{c2}]{cls.online_ips} / {cls.scanned_ips}  -  [{c1}]Port(s): [{c2}]{portz}  -  [{c1}]Max Workers:[{c2}] {max_workers}  -  [{c1}]Errors:[{c2}] {Database.errors}  -  Developed by NSM Barii")
+
+
+                    if time.time() - last_save > 5 and cls.save:
+                        with LOCK:
+                            File_Saver.push_ips_found(data=cls.current_ips, CONSOLE=console, verbose=False)
+                            last_save = time.time()
+                            cls.current_ips = []
+
+                    # Reinit every 100k to prevent hanging
+                    if cls.scanned_ips > 0 and cls.last_scan > 100000:
+                        console.print(f"\n[bold yellow][!] Reinitializing ThreadPool at: {cls.scanned_ips} IPs...")
+                        cls.scan = False
+                        time.sleep(5)
+                        return False
+
+                sys.exit()
+
+            except KeyboardInterrupt as e:
+                console.print("[bold red][-] Killing ALL Threads...."); cls.scan=False
+                executor.shutdown(wait=False, cancel_futures=True)
+                exit()
+            except Exception as e: console.print(f"[bold red]Exception Error:[bold yellow] {e}"); cls.scan=False; exit()
+
+
     @classmethod
     def _thread_handler(cls):
         """This method will be a mainter for _ip_threader()"""
@@ -309,7 +305,6 @@ class Mass_IP_Scanner():
         cls.scanned_ips = 0 
         cls.online_ips  = 0
         cls.current_ips = []
-        cls.last_scan   = time.time()
 
         
         print("\n")
@@ -323,11 +318,12 @@ class Mass_IP_Scanner():
             port = console.input("\n[bold yellow]Enter port to mass scan for!: ") or 80
             threads = console.input("[bold yellow]Enter Thread count!: ") or 250; print('\n')
         
-
-
-        while True:
-            Mass_IP_Scanner._ip_threader(ports=port, max_workers=threads or 250)
-            cls.scan = True
+        
+        panel = Panel(renderable="[bold red]Mass IP Scanner", border_style="bold purple", expand=False)
+        with Live(panel, console=console, refresh_per_second=4):
+            while True:
+                Mass_IP_Scanner._ip_threader(ports=port, max_workers=threads or 250, panel=panel)
+                cls.scan = True; cls.last_scan   = 0
 
 
 
