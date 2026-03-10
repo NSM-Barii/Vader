@@ -257,7 +257,7 @@ class Mass_IP_Scanner():
                             cls.current_ips = []
 
                     # Reinit every 100k to prevent hanging
-                    if cls.scanned_ips > 0 and cls.last_scan > 250000:
+                    if cls.scanned_ips > 0 and cls.last_scan > 300000:
                         console.print(f"\n[bold yellow][!] Reinitializing ThreadPool!")
                         cls.scan = False
                         time.sleep(5)
