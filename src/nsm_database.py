@@ -1064,6 +1064,7 @@ class File_Saver():
 
 
     path = False
+    ips_saved = []
 
 
 
@@ -1099,7 +1100,11 @@ class File_Saver():
     
         try:
             with LOCK:
-                clean = "\n".join(data) + "\n"
+                ips = []
+                for ip in data:
+                    if ip not in cls.ips_saved: ips.append(ip)
+                    
+                clean = "\n".join(ips) + "\n"
 
 
             with open(str(cls.path), "a") as file: file.write(clean)

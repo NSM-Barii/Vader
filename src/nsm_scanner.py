@@ -358,7 +358,7 @@ class Mass_IP_Scanner():
     current_block    = False
     bf_all = None
     total_ips        = 0
-    # cls.total_blocks is set in the _main() method
+    total_blocks     = []
 
 
 
@@ -402,7 +402,7 @@ class Mass_IP_Scanner():
                 network = ipaddress.IPv4Network(cls.current_block); cls.total_ips += network.num_addresses
                 cls.ips_from_block = [ip for ip in network]
 
-                console.print(f"\n[bold green][*] Current IPv4 Block:[yellow] {cls.current_block}  -  IPv4 Addresses: {network.num_addresses}\n")
+                console.print(f"\n[bold green][*] Current IPv4 Block:[yellow] {cls.current_block}  -  IPv4 Addresses: {network.num_addresses}")
                 time.sleep(1)
 
 
@@ -505,7 +505,7 @@ class Mass_IP_Scanner():
                     if result == 0: #and result.haslayer(TCP) and result[TCP].flags == 0x12:
 
                         with LOCK:
-                            if cls.save and ip not in cls.current_ips:
+                            if cls.save:
                                 cls.current_ips.append(ip)
                             cls.online_ips += 1
 
@@ -583,7 +583,7 @@ class Mass_IP_Scanner():
             
             finally:
 
-                if cls.save: 
+                if cls.save and cls.current_ips: 
                     with LOCK: File_Saver.push_ips_found(data=cls.current_ips, CONSOLE=console, verbose=True)
                 
                 exit()
