@@ -384,7 +384,7 @@ class Mass_IP_Scanner():
                         stats = (
                             f"\n[{c1}] [+] Total online IPv4s:[{c4}] {cls.online_ips}"
                             f"\n[{c1}] [+] Total Blocks scanned:[{c4}] {len(cls.total_blocks)}"
-                            f"\n[{c1}] [+] Total IPv4s scanned:[{c4}] {len(cls.total_ips)}"
+                            f"\n[{c1}] [+] Total IPv4s scanned:[{c4}] {cls.total_ips}"
                             f"\n[{c1}] [+] Elapsed Time:[{c4}] {time_total}"
                         )
 
