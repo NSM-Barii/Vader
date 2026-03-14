@@ -1008,28 +1008,7 @@ class Database():
 
         
         except Exception as e: console.print(f"[bold red][-] Exception Error:[bold yellow] {e}")
-    
 
-    @classmethod
-    def main(cls, ip, port, CONSOLE=console):
-        """This will be the main method for spawning co-methods for Database"""
-
-
-        # COLORS
-        c1 = "bold red"
-        c2 = "bold yellow"
-        c3 = "bold blue"
-        c4 = "bold green"
-        c5 = "white"
-        space = "    "
-
-
-        with LOCK:
-            CONSOLE.print(f"\n[{c4}][+] Active IP:[/{c4}] [{c2}]{ip}[/{c2}]:{port}")
-            if   cls.lookup == "local":  Database._get_geo_info_local(ip=ip, CONSOLE=CONSOLE, verbose=False)
-            elif cls.lookup == "ipinfo": Database._get_geo_info_ipinfo(ip=ip, CONSOLE=CONSOLE)
-        
-            if Database.paths: Database._check_paths(ip=ip, port=port, CONSOLE=CONSOLE)
 
 
     @classmethod
@@ -1054,6 +1033,32 @@ class Database():
 
 
 
+    @classmethod
+    def main(cls, ip, port, CONSOLE=console):
+        """This will be the main method for spawning co-methods for Database"""
+
+
+        # COLORS
+        c1 = "bold red"
+        c2 = "bold yellow"
+        c3 = "bold blue"
+        c4 = "bold green"
+        c5 = "white"
+        space = "    "
+
+
+        with LOCK:
+            CONSOLE.print(f"\n[{c4}][+] Active IP:[/{c4}] [{c2}]{ip}[/{c2}]:{port}")
+            if   cls.lookup == "local":  Database._get_geo_info_local(ip=ip, CONSOLE=CONSOLE, verbose=False)
+            elif cls.lookup == "ipinfo": Database._get_geo_info_ipinfo(ip=ip, CONSOLE=CONSOLE)
+        
+            if Database.paths: Database._check_paths(ip=ip, port=port, CONSOLE=CONSOLE)
+
+
+
+
+
+
 class File_Saver():
     """This class will save files"""
 
@@ -1063,7 +1068,7 @@ class File_Saver():
 
 
     @classmethod
-    def push_ips_found(cls, data, CONSOLE, verbose=False):
+    def push_ips_found(cls, data, CONSOLE, save_name=False, verbose=False):
         """This will push current set of ips"""
 
 
@@ -1076,10 +1081,12 @@ class File_Saver():
 
                 if path.exists():
 
-                    timestamp = datetime.now().strftime("%Y_%m_%d__%H_%M_%S")
 
-                    if Database.country: cls.path = path / f"{Database.country}_{timestamp}.txt"
-                    else:                cls.path = path / f"{timestamp}.txt"
+                    timestamp = datetime.now().strftime("%Y_%m_%d__%H_%M_%S")
+                    
+                    if save_name:          cls.path = path / str(save_name)
+                    elif Database.country: cls.path = path / f"{Database.country}_{timestamp}.txt"
+                    else:                  cls.path = path / f"{timestamp}.txt"
 
                     CONSOLE.print(f"[bold green][+] File Path successfully made:[/bold green] {cls.path}")
 
@@ -1092,7 +1099,7 @@ class File_Saver():
     
         try:
             with LOCK:
-                clean = "\n".join(data)
+                clean = "\n".join(data) 
 
 
             with open(str(cls.path), "a") as file: file.write(clean)

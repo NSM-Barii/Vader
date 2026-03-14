@@ -50,6 +50,7 @@ class Main():
     parser.add_argument("-t", help="Maximum number of threads to spawn.")
 
     parser.add_argument("--save", action="store_true", help="Save all active IPs to database/ips.txt.")
+    parser.add_argument("--x",    help="Use this to set a custom file name")
 
 
     parser.add_argument("--country", help="Only create IP Blocks within x Country")
@@ -90,6 +91,7 @@ class Main():
     lookup         = args.geo         or False
     api_key_ipinfo = args.ipinfo      or False
     save           = args.save        or False
+    save_name      = args.x           or False
 
     # WARNING
     if not country:
@@ -113,9 +115,10 @@ class Main():
 
     # SET CONSTANTS
     Mass_IP_Scanner.country = country
-    Mass_IP_Scanner.asn     = asn
-    Mass_IP_Scanner.all     = all
-    Mass_IP_Scanner.save    = save
+    Mass_IP_Scanner.asn        = asn
+    Mass_IP_Scanner.all        = all
+    Mass_IP_Scanner.save       = save
+    Mass_IP_Scanner.save_name  = save_name
     Mass_IP_Scanner.bloom_size = bloom_size
 
 

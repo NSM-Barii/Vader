@@ -194,11 +194,13 @@ class Mass_IP_Scanner_old():
                     result = s.connect_ex((ip, int(port)))
 
                     if result == 0: #and result.haslayer(TCP) and result[TCP].flags == 0x12:
-                         
-                        with LOCK: 
-                            if cls.save: cls.current_ips.append(ip)
+
+                        with LOCK:
+                            if cls.save and ip not in cls.saved_ips_set:
+                                cls.current_ips.append(ip)
+                                cls.saved_ips_set.add(ip)
                             cls.online_ips += 1
-                        
+
                         Database.main(ip=ip, port=port, CONSOLE=console)
 
 
@@ -331,7 +333,7 @@ class Mass_IP_Scanner_old():
 class Mass_IP_Scanner():
     """This class will be responsible for finding active ips on user choosen port"""
 
-    
+
     # ARGS
     country = False
     asn     = False
@@ -339,6 +341,7 @@ class Mass_IP_Scanner():
 
     all     = False
     save    = False
+    save_name = False   
     bloom_size = 100000000
 
 
@@ -351,13 +354,14 @@ class Mass_IP_Scanner():
     database = False
 
 
-    # IPS
+    # IPS  // THESE ARE USED BY cls._track_ip_blocks() and cls._generate_random_ip()
     total_ips        = None
     total_blocks     = []
     ips_from_block   = []
     current_block    = False
     blocks_done      = 0
     bf_all = None
+    saved_ips_set = set()
 
 
 
@@ -483,11 +487,13 @@ class Mass_IP_Scanner():
                     result = s.connect_ex((ip, int(port)))
 
                     if result == 0: #and result.haslayer(TCP) and result[TCP].flags == 0x12:
-                         
-                        with LOCK: 
-                            if cls.save: cls.current_ips.append(ip)
+
+                        with LOCK:
+                            if cls.save and ip not in cls.saved_ips_set:
+                                cls.current_ips.append(ip)
+                                cls.saved_ips_set.add(ip)
                             cls.online_ips += 1
-                        
+
                         Database.main(ip=ip, port=port, CONSOLE=console)
 
 
@@ -541,7 +547,7 @@ class Mass_IP_Scanner():
 
                     if time.time() - last_save > 5 and cls.save:
                         with LOCK:
-                            File_Saver.push_ips_found(data=cls.current_ips, CONSOLE=console, verbose=False)
+                            File_Saver.push_ips_found(data=cls.current_ips, CONSOLE=console, save_name=cls.save_name, verbose=False)
                             last_save = time.time()
                             cls.current_ips = []
 
@@ -556,6 +562,8 @@ class Mass_IP_Scanner():
             except KeyboardInterrupt as e:
                 console.print("[bold red][-] Killing ALL Threads...."); cls.scan=False
                 executor.shutdown(wait=False, cancel_futures=True)
+
+                with LOCK: File_Saver.push_ips_found(data=cls.current_ips, CONSOLE=console, verbose=True)
                 exit()
             except Exception as e: console.print(f"[bold red]Exception Error:[bold yellow] {e}"); cls.scan=False; exit()
 
