@@ -354,7 +354,7 @@ class Mass_IP_Scanner():
 
 
     # IPS  // THESE ARE USED BY cls._track_ip_blocks() and cls._generate_random_ip()
-    ips_from_block   = None
+    ips_from_block   = 0
     current_block    = False
     bf_all = None
     total_ips        = None
