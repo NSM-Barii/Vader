@@ -583,7 +583,7 @@ class Mass_IP_Scanner():
         
         print("\n")
         if cls.country: cls.blocks = Database.get_ip_block(country=cls.country, CONSOLE=console)
-        if cls.save:    File_Saver.push_ips_found(data=False, CONSOLE=console)
+        if cls.save:    File_Saver.push_ips_found(data=False, CONSOLE=console, save_name=cls.save_name  )
         if cls.asn:     data, cls.blocks = Database.get_asn(country=cls.country, asns=cls.asn)
 
         if cls.country: Database.get_total_ips(blocks=cls.blocks)
