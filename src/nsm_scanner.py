@@ -377,7 +377,11 @@ class Mass_IP_Scanner():
 
                     time_total = time.time() - cls.time_start
                     
-                    if cls.scan: 
+                    if cls.scan:
+
+                        if cls.save and cls.current_ips: 
+                            with LOCK: File_Saver.push_ips_found(data=cls.current_ips, CONSOLE=console, verbose=True)
+                 
 
                         c1 = "red"; c2 = "bold green"; c3 = "bold blue"; c4 = "bold yellow"
 
@@ -572,7 +576,7 @@ class Mass_IP_Scanner():
                         #time.sleep(5)
                         return False
 
-                sys.exit()
+                #sys.exit()
 
             except KeyboardInterrupt as e:
                 console.print("[bold red][-] Killing ALL Threads...."); cls.scan=False
@@ -586,8 +590,6 @@ class Mass_IP_Scanner():
                 if cls.save and cls.current_ips: 
                     with LOCK: File_Saver.push_ips_found(data=cls.current_ips, CONSOLE=console, verbose=True)
                 
-                exit()
-
 
 
     @classmethod
