@@ -113,38 +113,7 @@ class Main():
     all            = args.show_all    or False
     
 
-    # SET CONSTANTS
-    Mass_IP_Scanner.country = country
-    Mass_IP_Scanner.asn        = asn
-    Mass_IP_Scanner.all        = all
-    Mass_IP_Scanner.save       = save
-    Mass_IP_Scanner.save_name  = save_name
-    Mass_IP_Scanner.bloom_size = bloom_size
-
-
-    # ASSIGN PRESETS
-    if iot:        port = Database.IOT_PORTS;
-    elif nas:      port = Database.paths_nas      ; Database.paths = Database.paths_nas
-    elif router:   port = Database.ROUTER_PORTS   ; Database.paths = Database.paths_router
-    elif remote:   port = Database.REMOTE_PORTS
-    elif camera:   port = Database.CAMERA_PORTS   ; Database.paths = Database.paths_camera
-    elif database: port = Database.DATABASE_PORTS
-
-    if port == "1": port = Database.CRITICAL_INFRASTRUCTURE_PORTS 
-    
-    
-    if paths:
-        if   paths in ["nas"]:    Database.paths = Database.paths_nas
-        elif paths in ["router"]: Database.paths = Database.paths_router    
-        elif paths in ["camera"]: Database.paths = Database.paths_camera
-
-
-    Database.ports  = port
-    Database.lookup = lookup
-    Database.api_key_ipinfo = api_key_ipinfo
-
-
-    # IRANIAN CRITICAL INFRASTRUCTURE ASN SHORTCUTS
+    # IRANIAN CRITICAL INFRASTRUCTURE ASN SHORTCUTS (must come before port assignment)
     # TIER 1: CRITICAL INFRASTRUCTURE (Energy, Power Grid, Major Telecom, Transport)
     if asn=="1":
         Mass_IP_Scanner.asn = "5542,6736,21170,31303,34837,35285,39200,42143,42750,42867,42907,43358,44244,44436,47603,48159,49666,50722,50992,51119,51168,51554,51732,52196,57218,57577,58169,59654,59961,60605,62039,197207,199633,200376,201442,202788,203026,205490,205899,206929,208072,209079,214419,214737"
@@ -168,6 +137,37 @@ class Main():
         Mass_IP_Scanner.asn = "16018,31182,34871,35615,41061,42990,47817,49433,50855,51460,51618,51785,52070,57241,57574,59754,60407,60516,61250,62238,203162,208493,208651,209941,210470,213682,213872,213916,215700"
         save = True
         save_name = "iran_ips_financial.txt"
+
+
+    # SET CONSTANTS
+    Mass_IP_Scanner.country = country
+    Mass_IP_Scanner.asn        = asn
+    Mass_IP_Scanner.all        = all
+    Mass_IP_Scanner.save       = save
+    Mass_IP_Scanner.save_name  = save_name
+    Mass_IP_Scanner.bloom_size = bloom_size
+
+
+    # ASSIGN PRESETS
+    if iot:        port = Database.IOT_PORTS
+    elif nas:      port = Database.paths_nas      ; Database.paths = Database.paths_nas
+    elif router:   port = Database.ROUTER_PORTS   ; Database.paths = Database.paths_router
+    elif remote:   port = Database.REMOTE_PORTS
+    elif camera:   port = Database.CAMERA_PORTS   ; Database.paths = Database.paths_camera
+    elif database: port = Database.DATABASE_PORTS
+
+    if port == "1": port = Database.CRITICAL_INFRASTRUCTURE_PORTS
+
+
+    if paths:
+        if   paths in ["nas"]:    Database.paths = Database.paths_nas
+        elif paths in ["router"]: Database.paths = Database.paths_router
+        elif paths in ["camera"]: Database.paths = Database.paths_camera
+
+
+    Database.ports  = port
+    Database.lookup = lookup
+    Database.api_key_ipinfo = api_key_ipinfo
 
 
 
