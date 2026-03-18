@@ -42,6 +42,76 @@ class Database():
     
 
     # PRESETS
+    CRITICAL_INFRASTRUCTURE_PORTS = [
+        # Web Services & Admin Panels
+        80,      # HTTP
+        443,     # HTTPS
+        8080,    # HTTP Alternate
+        8443,    # HTTPS Alternate
+        8000,    # Common web panel
+        8888,    # Alternate web panel
+
+        # Remote Access
+        22,      # SSH
+        23,      # Telnet
+        21,      # FTP
+        3389,    # RDP
+        5900,    # VNC
+
+        # ICS/SCADA Protocols
+        502,     # Modbus TCP (energy grid, industrial)
+        20000,   # DNP3 (electric utility SCADA)
+        102,     # Siemens S7 (industrial control)
+        44818,   # EtherNet/IP (industrial automation)
+        1911,    # Niagara Fox (building automation)
+        47808,   # BACnet (building/facility automation)
+        789,     # RedLion Crimson3
+        4840,    # OPC UA (industrial data exchange)
+        2404,    # IEC 60870-5-104 (power system control)
+
+        # Databases
+        3306,    # MySQL
+        5432,    # PostgreSQL
+        27017,   # MongoDB
+        6379,    # Redis
+        9200,    # Elasticsearch
+        1433,    # MS SQL Server
+        5984,    # CouchDB
+
+        # Management & Monitoring
+        161,     # SNMP
+        623,     # IPMI
+        8291,    # MikroTik Winbox
+        7547,    # TR-069 (ISP remote mgmt)
+        9000,    # Various management panels
+
+        # VoIP/Telecom
+        5060,    # SIP
+        5061,    # SIP TLS
+        1720,    # H.323
+
+        # File Sharing
+        445,     # SMB
+        139,     # NetBIOS
+        2049,    # NFS
+
+        # Email
+        25,      # SMTP
+        110,     # POP3
+        143,     # IMAP
+        465,     # SMTPS
+        993,     # IMAPS
+        995,     # POP3S
+
+        # Other Critical Services
+        53,      # DNS
+        123,     # NTP
+        514,     # Syslog
+        1883,    # MQTT
+        5672,    # AMQP
+        9092,    # Kafka
+    ]
+
     DATABASE_PORTS = [
         3306,   # MySQL
         5432,   # PostgreSQL
@@ -79,7 +149,7 @@ class Database():
         9000,   # Various NAS web panels
         445,    # SMB file sharing
         139     # NetBIOS session service
-    ] 
+    ]
 
     REMOTE_PORTS = [
         3389,   # RDP
