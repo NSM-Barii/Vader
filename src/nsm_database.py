@@ -12,6 +12,7 @@ from datetime import datetime
 
 LOCK = threading.Lock()
 console = Console()
+BASE_DIR = Path(__file__).parent.parent / "database"
 
 
 
@@ -438,7 +439,22 @@ class Database:
 
 
 
-   
+
+    @staticmethod
+    def _print_geo(country, region, city, org, postal, timezone, CONSOLE=console):
+        """Print geo info for an IP"""
+        c4 = "bold green"
+        c5 = "white"
+        space = "    "
+        CONSOLE.print(
+            f" [{c4}]{space}[+] Country:[{c5}] {country}"
+            f"\n [{c4}]{space}[+] region:[{c5}] {region}"
+            f"\n [{c4}]{space}[+] city:[{c5}] {city}"
+            f"\n [{c4}]{space}[+] org:[{c5}] {org}"
+            f"\n [{c4}]{space}[+] postal:[{c5}] {postal}"
+            f"\n [{c4}]{space}[+] timezone:[{c5}] {timezone}"
+        )
+
     @classmethod
     def _check_paths(cls, ip, port, CONSOLE=console, timeout=1, errors=False):
         """This will check path signatures"""
@@ -496,20 +512,13 @@ class Database:
     def _get_geo_info_local(cls, ip, CONSOLE=console):
         """This method will be used to get our own in house geo ip info"""
 
-        # COLORS
-        c4 = "bold green"
-        c5 = "white"
-        space = "    "
-
         try:
             if not cls.reader_asn:
                 p1 = "geo_lookup"
-                path_asn  = str(Path(__file__).parent.parent / "database" /  p1 / "L-ASN" / "L-ASN.mmdb" )
-                path_city = str(Path(__file__).parent.parent / "database" /  p1 / "L-City" / "L-City.mmdb" )
+                path_asn  = str(BASE_DIR /  p1 / "L-ASN" / "L-ASN.mmdb" )
+                path_city = str(BASE_DIR /  p1 / "L-City" / "L-City.mmdb" )
                 cls.reader_asn  = geoip2.database.Reader(path_asn)
                 cls.reader_city = geoip2.database.Reader(path_city)
-            
-
 
             asn_response  = cls.reader_asn.asn(ip)
             city_response = cls.reader_city.city(ip)
@@ -519,20 +528,9 @@ class Database:
             city     = city_response.city.name or False
             postal   = city_response.postal.code or False
             timezone = city_response.location.time_zone or False
-
             org = asn_response.autonomous_system_organization or False
-                    
 
-            
-        
-            CONSOLE.print(
-                f" [{c4}]{space}[+] Country:[{c5}] {country}"
-                f"\n [{c4}]{space}[+] region:[{c5}] {region}"
-                f"\n [{c4}]{space}[+] city:[{c5}] {city}"
-                f"\n [{c4}]{space}[+] org:[{c5}] {org}"
-                f"\n [{c4}]{space}[+] postal:[{c5}] {postal}"
-                f"\n [{c4}]{space}[+] timezone:[{c5}] {timezone}"
-            )
+            cls._print_geo(country, region, city, org, postal, timezone, CONSOLE=CONSOLE)
 
  
         except Exception as e: 
@@ -544,54 +542,30 @@ class Database:
     def _get_geo_info_ipinfo(cls, ip, CONSOLE=console, timeout=3, verbose=False):
         """This method will be responsible for grabbing the geo info on said ip"""
 
-        # COLORS
-        c1 = "bold red"
-        c4 = "bold green"
-        c5 = "white"
-        space = "    "
-
         if cls.api_key_ipinfo:
-
-            api_key =  cls.api_key_ipinfo   
-            url     = f"https://ipinfo.io/{ip}/json/?token={api_key}"
-        
-        else: url   =  f"https://ipinfo.io/{ip}/json"
-
-
+            url = f"https://ipinfo.io/{ip}/json/?token={cls.api_key_ipinfo}"
+        else:
+            url = f"https://ipinfo.io/{ip}/json"
 
         try:
-
             response = requests.get(url=url, timeout=timeout)
             data = response.json()
-            text = response.text
-
 
             if response.status_code in [200,204]:
 
                 if verbose: CONSOLE.print(data)
 
-                country   = data.get("country",  False)  
+                country   = data.get("country",  False)
                 region    = data.get("region",   False)
                 city      = data.get("city",     False)
                 org       = data.get("org",      False)
                 postal    = data.get("postal",   False)
                 timezone  = data.get("timezone", False)
 
-
-                CONSOLE.print(
-                    f" [{c4}]{space}[+] Country:[{c5}] {country}"
-                    f"\n [{c4}]{space}[+] region:[{c5}] {region}"
-                    f"\n [{c4}]{space}[+] city:[{c5}] {city}"
-                    f"\n [{c4}]{space}[+] org:[{c5}] {org}"
-                    f"\n [{c4}]{space}[+] postal:[{c5}] {postal}"
-                    f"\n [{c4}]{space}[+] timezone:[{c5}] {timezone}"
-                )
-            
+                cls._print_geo(country, region, city, org, postal, timezone, CONSOLE=CONSOLE)
 
             else:
-
-                CONSOLE.print(f" [{c1}]{space}[-] IPInfo Lookup Failed :[{c5}] {text}")
-        
+                CONSOLE.print(f" [bold red]    [-] IPInfo Lookup Failed :[white] {response.text}")
 
         except Exception:
             cls.errors += 1
@@ -602,7 +576,7 @@ class Database:
         """This will be used to validate user inputted country"""
 
 
-        path_ip_blocks = Path(__file__).parent.parent / "database" / "ip_blocks"
+        path_ip_blocks = BASE_DIR / "ip_blocks"
         path_country   = path_ip_blocks / f"{country}.txt"
 
         if not path_ip_blocks.exists():
@@ -623,7 +597,7 @@ class Database:
         """This will be used to validate user inputted country"""
 
 
-        path_asn = Path(__file__).parent.parent / "database" / "asns" / f"{country}.json"
+        path_asn = BASE_DIR / "asns" / f"{country}.json"
         valid_asn  = []
 
         if path_asn.exists():
@@ -787,7 +761,7 @@ class Database:
 
             # 233 COUNTRYS
 
-            ip_block_dir = str(Path(__file__).parent.parent / "database" / "ip_blocks")
+            ip_block_dir = str(BASE_DIR / "ip_blocks")
             os.chdir(ip_block_dir)
             console.print(f"[bold green][+] Successfully changed DIR to: {ip_block_dir}")
             
@@ -816,54 +790,38 @@ class Database:
         try:
 
    
-            asn_file = str(Path(__file__).parent.parent / "database" / "asns" / "info.txt")
+            asn_file = str(BASE_DIR / "asns" / "info.txt")
 
             console.print(f"[bold green][+] Reading ASN database from: {asn_file}")
             
 
 
-            for code in cls.zone_to_country:
+            # Read CSV once, group by country code
+            rows_by_code = {}
+            with open(asn_file) as file:
+                for row in csv.DictReader(file):
+                    cc = row['country-code'].lower()
+                    rows_by_code.setdefault(cc, []).append(row)
 
+            for zone, country_name in cls.zone_to_country.items():
+                if not country_name: continue
+                safe_country = country_name.replace(" ", "_")
+                code = zone.split('.')[0]
 
                 asns = {}
-                country = cls.zone_to_country.get(code, False)
-                if not country: continue
-                country = country.replace(" ", "_")
-                code = code.split('.')[0]
+                for row in rows_by_code.get(code, []):
+                    asns[row["asn"]] = {
+                        "country_code": row["country-code"],
+                        "asn": row["asn"],
+                        "description": row["description"],
+                        "handle": row["handle"]
+                    }
 
-                with open(asn_file) as file:
-                    reader = csv.DictReader(file)
-
-
-
-
-                    for row in reader:
-                        if row['country-code'].lower() == code:
-                            
-
-                            # DATA
-                            country_code = row["country-code"]
-                            asn          = row["asn"]
-                            description  = row["description"]
-                            handle       = row["handle"]
-
-                            data = {
-                                "country_code": country_code,
-                                "asn": asn,
-                                "description": description,
-                                "handle": handle
-                            }
-
-                            asns[row["asn"]] = data
-                
-                save_file = str(Path(__file__).parent.parent / "database" / "asns" / f"{country}.json")
+                save_file = str(BASE_DIR / "asns" / f"{safe_country}.json")
                 with open(save_file, "w") as file:
                     json.dump(asns, file, indent=4)
-                    console.print(f"[bold green][+] Successfully saved asns: {save_file}")
-                    
-                
-      
-                console.print(f"[bold green][+] Found {len(asns)} ASNs for country code: {code}")
+
+                console.print(f"[bold green][+] Saved {len(asns)} ASNs for {code}: {save_file}")
 
 
 
@@ -889,7 +847,7 @@ class Database:
 
             package = {}
 
-            ip_block_dir = str(Path(__file__).parent.parent / "database" / "asns" / "US")
+            ip_block_dir = str(BASE_DIR / "asns" / "US")
             os.chdir(ip_block_dir)
             console.print(f"[bold green][+] Successfully changed DIR to: {ip_block_dir}")
 
@@ -983,7 +941,7 @@ class File_Saver:
 
             
             try:
-                path = Path(__file__).parent.parent / "database" / "saved_ips"
+                path = BASE_DIR / "saved_ips"
 
                 if path.exists():
 
