@@ -110,7 +110,7 @@ class Mass_IP_Scanner:
         try:
             if cls.country:
                 with LOCK:
-                    return cls._track_ip_blocks()
+                    return Mass_IP_Scanner._track_ip_blocks()
 
             else:
                 with LOCK:
@@ -138,7 +138,7 @@ class Mass_IP_Scanner:
 
         if not cls.scan:
             return False
-        ip = cls._generate_random_ip()
+        ip = Mass_IP_Scanner._generate_random_ip()
         if not ip:
             return
 
@@ -186,7 +186,9 @@ class Mass_IP_Scanner:
                 while cls.scan:
                     while len(futures) < max_workers and cls.scan:
                         futures.append(
-                            executor.submit(cls._random_ip_validator, portz, timeout)
+                            executor.submit(
+                                Mass_IP_Scanner._random_ip_validator, portz, timeout
+                            )
                         )
 
                     futures = [f for f in futures if not f.done()]
@@ -270,7 +272,9 @@ class Mass_IP_Scanner:
                 cls.scan = True
                 cls.last_scan = 0
                 time.sleep(5)
-                cls._ip_threader(ports=port, max_workers=threads or 250, panel=panel)
+                Mass_IP_Scanner._ip_threader(
+                    ports=port, max_workers=threads or 250, panel=panel
+                )
 
 
 if __name__ == "__main__":
