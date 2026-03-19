@@ -16,189 +16,166 @@ BASE_DIR = Path(__file__).parent.parent / "database"
 OK_STATUS = (200, 204)
 
 
-
-
 class Database:
     """This will hold database values"""
 
-
     # HOLD ALL ERRORS
     errors = 0
-    
 
     # SET FROM main.py
     paths = False
 
-
     # VARS
-    lookup         = False
-    country        = False # FOR File_Saving
-    api_key_ipinfo = False   
-    reader_asn     = False
-    reader_city    = False
-
-    
+    lookup = False
+    country = False  # FOR File_Saving
+    api_key_ipinfo = False
+    reader_asn = False
+    reader_city = False
 
     # PRESETS
     CRITICAL_INFRASTRUCTURE_PORTS = [
         # Web Services & Admin Panels
-        80,      # HTTP
-        443,     # HTTPS
-        8080,    # HTTP Alternate
-        8443,    # HTTPS Alternate
-        8000,    # Common web panel
-        8888,    # Alternate web panel
-
+        80,  # HTTP
+        443,  # HTTPS
+        8080,  # HTTP Alternate
+        8443,  # HTTPS Alternate
+        8000,  # Common web panel
+        8888,  # Alternate web panel
         # Remote Access
-        22,      # SSH
-        23,      # Telnet
-        21,      # FTP
-        3389,    # RDP
-        5900,    # VNC
-
+        22,  # SSH
+        23,  # Telnet
+        21,  # FTP
+        3389,  # RDP
+        5900,  # VNC
         # ICS/SCADA Protocols
-        502,     # Modbus TCP (energy grid, industrial)
-        20000,   # DNP3 (electric utility SCADA)
-        102,     # Siemens S7 (industrial control)
-        44818,   # EtherNet/IP (industrial automation)
-        1911,    # Niagara Fox (building automation)
-        47808,   # BACnet (building/facility automation)
-        789,     # RedLion Crimson3
-        4840,    # OPC UA (industrial data exchange)
-        2404,    # IEC 60870-5-104 (power system control)
-
+        502,  # Modbus TCP (energy grid, industrial)
+        20000,  # DNP3 (electric utility SCADA)
+        102,  # Siemens S7 (industrial control)
+        44818,  # EtherNet/IP (industrial automation)
+        1911,  # Niagara Fox (building automation)
+        47808,  # BACnet (building/facility automation)
+        789,  # RedLion Crimson3
+        4840,  # OPC UA (industrial data exchange)
+        2404,  # IEC 60870-5-104 (power system control)
         # Databases
-        3306,    # MySQL
-        5432,    # PostgreSQL
-        27017,   # MongoDB
-        6379,    # Redis
-        9200,    # Elasticsearch
-        1433,    # MS SQL Server
-        5984,    # CouchDB
-
+        3306,  # MySQL
+        5432,  # PostgreSQL
+        27017,  # MongoDB
+        6379,  # Redis
+        9200,  # Elasticsearch
+        1433,  # MS SQL Server
+        5984,  # CouchDB
         # Management & Monitoring
-        161,     # SNMP
-        623,     # IPMI
-        8291,    # MikroTik Winbox
-        7547,    # TR-069 (ISP remote mgmt)
-        9000,    # Various management panels
-
+        161,  # SNMP
+        623,  # IPMI
+        8291,  # MikroTik Winbox
+        7547,  # TR-069 (ISP remote mgmt)
+        9000,  # Various management panels
         # VoIP/Telecom
-        5060,    # SIP
-        5061,    # SIP TLS
-        1720,    # H.323
-
+        5060,  # SIP
+        5061,  # SIP TLS
+        1720,  # H.323
         # File Sharing
-        445,     # SMB
-        139,     # NetBIOS
-        2049,    # NFS
-
+        445,  # SMB
+        139,  # NetBIOS
+        2049,  # NFS
         # Email
-        25,      # SMTP
-        110,     # POP3
-        143,     # IMAP
-        465,     # SMTPS
-        993,     # IMAPS
-        995,     # POP3S
-
+        25,  # SMTP
+        110,  # POP3
+        143,  # IMAP
+        465,  # SMTPS
+        993,  # IMAPS
+        995,  # POP3S
         # Other Critical Services
-        53,      # DNS
-        123,     # NTP
-        514,     # Syslog
-        1883,    # MQTT
-        5672,    # AMQP
-        9092,    # Kafka
+        53,  # DNS
+        123,  # NTP
+        514,  # Syslog
+        1883,  # MQTT
+        5672,  # AMQP
+        9092,  # Kafka
     ]
 
     DATABASE_PORTS = [
-        3306,   # MySQL
-        5432,   # PostgreSQL
+        3306,  # MySQL
+        5432,  # PostgreSQL
         27017,  # MongoDB
-        6379,   # Redis
-        9200    # Elasticsearch
+        6379,  # Redis
+        9200,  # Elasticsearch
     ]
 
     CAMERA_PORTS = [
-        80,      # HTTP web interface (most common camera login page)
-        443,     # HTTPS web interface (secure camera panel)
-        554,     # RTSP video stream (very high signal for cameras)
-        8000,    # Hikvision / OEM camera management port
-        8080,    # Alternate HTTP web interface
-        37777,   # Dahua proprietary service port
-        34567,   # Common on generic / cheap OEM IP cameras
-        3702,    # ONVIF discovery (usually LAN, not internet)
-        8443     # Alternate HTTPS web interface
+        80,  # HTTP web interface (most common camera login page)
+        443,  # HTTPS web interface (secure camera panel)
+        554,  # RTSP video stream (very high signal for cameras)
+        8000,  # Hikvision / OEM camera management port
+        8080,  # Alternate HTTP web interface
+        37777,  # Dahua proprietary service port
+        34567,  # Common on generic / cheap OEM IP cameras
+        3702,  # ONVIF discovery (usually LAN, not internet)
+        8443,  # Alternate HTTPS web interface
     ]
 
     ROUTER_PORTS = [
-        80,     # HTTP admin panel
-        443,    # HTTPS admin panel
-        8080,   # Alternate web admin
-        8443,   # Alternate secure admin
-        23,     # Telnet (legacy routers)
-        22,     # SSH management
-        7547,   # TR-069 (ISP remote management)
-        8291    # MikroTik Winbox
+        80,  # HTTP admin panel
+        443,  # HTTPS admin panel
+        8080,  # Alternate web admin
+        8443,  # Alternate secure admin
+        23,  # Telnet (legacy routers)
+        22,  # SSH management
+        7547,  # TR-069 (ISP remote management)
+        8291,  # MikroTik Winbox
     ]
 
     NAS_PORTS = [
-        5000,   # Synology HTTP
-        5001,   # Synology HTTPS
-        9000,   # Various NAS web panels
-        445,    # SMB file sharing
-        139     # NetBIOS session service
+        5000,  # Synology HTTP
+        5001,  # Synology HTTPS
+        9000,  # Various NAS web panels
+        445,  # SMB file sharing
+        139,  # NetBIOS session service
     ]
 
     REMOTE_PORTS = [
-        3389,   # RDP
-        5900,   # VNC
-        22,     # SSH
-        21      # FTP
+        3389,  # RDP
+        5900,  # VNC
+        22,  # SSH
+        21,  # FTP
     ]
 
     IOT_PORTS = [
-        1883,   # MQTT
-        8883,   # Secure MQTT
-        5683,   # CoAP
-        5353    # mDNS (mostly LAN discovery)
-    ]   
+        1883,  # MQTT
+        8883,  # Secure MQTT
+        5683,  # CoAP
+        5353,  # mDNS (mostly LAN discovery)
+    ]
 
-
-   
     paths_camera = [
-         "/onvif/device_service",
+        "/onvif/device_service",
         "/snapshot.jpg",
         "/video.cgi",
         "/ISAPI/System/status",
         "/cgi-bin/magicBox.cgi",
         "/doc/page/login.asp",
-        "/web/cgi-bin/"
+        "/web/cgi-bin/",
     ]
 
     paths_router = [
-        "/",                 # title / server header
-        "/login",            # common
-        "/admin",            # common
-        "/cgi-bin/",         # embedded web UIs
-        "/HNAP1/",           # some consumer routers
-        "/setup.cgi",        # older firmwares
-        "/rom-0",            # legacy Zyxel-style misconfig (rare, but high signal)
-        "/api/",             # modern web panels
+        "/",  # title / server header
+        "/login",  # common
+        "/admin",  # common
+        "/cgi-bin/",  # embedded web UIs
+        "/HNAP1/",  # some consumer routers
+        "/setup.cgi",  # older firmwares
+        "/rom-0",  # legacy Zyxel-style misconfig (rare, but high signal)
+        "/api/",  # modern web panels
     ]
 
     paths_nas = [
-        "/",                       # landing page/title
-        "/webman/index.cgi",       # Synology DSM (often redirects)
-        "/auth.cgi",               # Synology auth endpoint (presence signal)
-        "/cgi-bin/",               # QNAP/Synology patterns
-        "/admin/",                 # generic NAS panels
+        "/",  # landing page/title
+        "/webman/index.cgi",  # Synology DSM (often redirects)
+        "/auth.cgi",  # Synology auth endpoint (presence signal)
+        "/cgi-bin/",  # QNAP/Synology patterns
+        "/admin/",  # generic NAS panels
     ]
-
-
-
-
-
-
 
     zone_to_country = {
         "af.zone": "Afghanistan",
@@ -435,11 +412,6 @@ class Database:
         "zm.zone": "Zambia",
         "zw.zone": "Zimbabwe",
     }
-            
-
-
-
-
 
     @staticmethod
     def _print_geo(country, region, city, org, postal, timezone, CONSOLE=console):
@@ -460,31 +432,30 @@ class Database:
     def _check_paths(cls, ip, port, CONSOLE=console, timeout=1, errors=False):
         """This will check path signatures"""
 
-        if not cls.paths: return
+        if not cls.paths:
+            return
         space = "    "
         c1 = "bold red"
         c2 = "bold yellow"
         c4 = "bold green"
 
-        
         for path in cls.paths:
-
             try:
-
                 url = f"http://{ip}{path}"
 
                 response = requests.get(url=url, timeout=timeout)
                 headers = response.headers
 
                 if response.status_code in OK_STATUS:
-
-                     
-
-
                     favicon = mmh3.hash(response.content)
                     title = False
-                    match = re.search(r"<title>(.*?)</title>", response.text, re.IGNORECASE | re.DOTALL)
-                    if match: title = match.group(1).strip()
+                    match = re.search(
+                        r"<title>(.*?)</title>",
+                        response.text,
+                        re.IGNORECASE | re.DOTALL,
+                    )
+                    if match:
+                        title = match.group(1).strip()
                     status = response.status_code
                     redirect = response.url if response.url != url else False
                     content_length = len(response.text) or False
@@ -492,7 +463,9 @@ class Database:
                     x_powered_by = headers.get("X-Powered-By", False)
 
                     with LOCK:
-                        CONSOLE.print(f"\n[{c4}][+] Active IP:[/{c4}] [{c2}]{ip}[/{c2}]:{port}")
+                        CONSOLE.print(
+                            f"\n[{c4}][+] Active IP:[/{c4}] [{c2}]{ip}[/{c2}]:{port}"
+                        )
                         CONSOLE.print(
                             f"{space}[{c4}][+] Directory:[{c2}] {url}",
                             f"\n{space}[{c4 if status else c1}][+] Status:[{c2}] {status}",
@@ -501,13 +474,13 @@ class Database:
                             f"\n{space}[{c4 if redirect else c1}][+] Redirect:[{c2}] {redirect}",
                             f"\n{space}[{c4 if content_length else c1}][+] Content-Length:[{c2}] {content_length}",
                             f"\n{space}[{c4 if x_powered_by else c1}][+] Powered-by:[{c2}] {x_powered_by}",
-                            f"\n{space}[{c4 if favicon else c1}][+] Favicon:[{c2}] {favicon}"
+                            f"\n{space}[{c4 if favicon else c1}][+] Favicon:[{c2}] {favicon}",
                         )
-            
-            except Exception as e: 
-                Database.errors += 1
-                if errors: CONSOLE.print(f"[bold red][-] Exception Error:[bold yellow] {e}")
 
+            except Exception as e:
+                Database.errors += 1
+                if errors:
+                    CONSOLE.print(f"[bold red][-] Exception Error:[bold yellow] {e}")
 
     @classmethod
     def _get_geo_info_local(cls, ip, CONSOLE=console):
@@ -516,29 +489,29 @@ class Database:
         try:
             if not cls.reader_asn:
                 p1 = "geo_lookup"
-                path_asn  = str(BASE_DIR /  p1 / "L-ASN" / "L-ASN.mmdb" )
-                path_city = str(BASE_DIR /  p1 / "L-City" / "L-City.mmdb" )
-                cls.reader_asn  = geoip2.database.Reader(path_asn)
+                path_asn = str(BASE_DIR / p1 / "L-ASN" / "L-ASN.mmdb")
+                path_city = str(BASE_DIR / p1 / "L-City" / "L-City.mmdb")
+                cls.reader_asn = geoip2.database.Reader(path_asn)
                 cls.reader_city = geoip2.database.Reader(path_city)
 
-            asn_response  = cls.reader_asn.asn(ip)
+            asn_response = cls.reader_asn.asn(ip)
             city_response = cls.reader_city.city(ip)
 
-            country  = city_response.country.name or False
-            region   = city_response.subdivisions.most_specific.name or False
-            city     = city_response.city.name or False
-            postal   = city_response.postal.code or False
+            country = city_response.country.name or False
+            region = city_response.subdivisions.most_specific.name or False
+            city = city_response.city.name or False
+            postal = city_response.postal.code or False
             timezone = city_response.location.time_zone or False
             org = asn_response.autonomous_system_organization or False
 
-            cls._print_geo(country, region, city, org, postal, timezone, CONSOLE=CONSOLE)
+            cls._print_geo(
+                country, region, city, org, postal, timezone, CONSOLE=CONSOLE
+            )
 
- 
-        except Exception as e: 
+        except Exception as e:
             Database.errors += 1
             CONSOLE.print(f"[bold red][-] Exception Error:[bold yellow] {e}")
 
-    
     @classmethod
     def _get_geo_info_ipinfo(cls, ip, CONSOLE=console, timeout=3, verbose=False):
         """This method will be responsible for grabbing the geo info on said ip"""
@@ -553,106 +526,108 @@ class Database:
             data = response.json()
 
             if response.status_code in OK_STATUS:
+                if verbose:
+                    CONSOLE.print(data)
 
-                if verbose: CONSOLE.print(data)
+                country = data.get("country", False)
+                region = data.get("region", False)
+                city = data.get("city", False)
+                org = data.get("org", False)
+                postal = data.get("postal", False)
+                timezone = data.get("timezone", False)
 
-                country   = data.get("country",  False)
-                region    = data.get("region",   False)
-                city      = data.get("city",     False)
-                org       = data.get("org",      False)
-                postal    = data.get("postal",   False)
-                timezone  = data.get("timezone", False)
-
-                cls._print_geo(country, region, city, org, postal, timezone, CONSOLE=CONSOLE)
+                cls._print_geo(
+                    country, region, city, org, postal, timezone, CONSOLE=CONSOLE
+                )
 
             else:
-                CONSOLE.print(f" [bold red]    [-] IPInfo Lookup Failed :[white] {response.text}")
+                CONSOLE.print(
+                    f" [bold red]    [-] IPInfo Lookup Failed :[white] {response.text}"
+                )
 
         except Exception:
             cls.errors += 1
-
 
     @classmethod
     def validate_country(cls, country, CONSOLE=console, verbose=True):
         """This will be used to validate user inputted country"""
 
-
         path_ip_blocks = BASE_DIR / "ip_blocks"
-        path_country   = path_ip_blocks / f"{country}.txt"
+        path_country = path_ip_blocks / f"{country}.txt"
 
         if not path_ip_blocks.exists():
-            CONSOLE.print("\n[bold red][-] Seems like your missing the ip_blocks directory, please check Documentation for fix")
+            CONSOLE.print(
+                "\n[bold red][-] Seems like your missing the ip_blocks directory, please check Documentation for fix"
+            )
             sys.exit()
 
         if path_country.exists():
-            if verbose: CONSOLE.print(f"[bold green][+] Found country.txt:[/bold green] {path_country}")
+            if verbose:
+                CONSOLE.print(
+                    f"[bold green][+] Found country.txt:[/bold green] {path_country}"
+                )
             cls.country = country
             return path_country
 
-        CONSOLE.print("\n[bold red][-] Invalid country given, please check documentation if your having trouble finding your country")
+        CONSOLE.print(
+            "\n[bold red][-] Invalid country given, please check documentation if your having trouble finding your country"
+        )
         sys.exit()
-  
 
     @classmethod
     def validate_asn(cls, country, asns, CONSOLE=console):
         """This will be used to validate user inputted country"""
 
-
         path_asn = BASE_DIR / "asns" / f"{country}.json"
-        valid_asn  = []
+        valid_asn = []
 
         if path_asn.exists():
-
             CONSOLE.print(f"[bold green][+] Found asn.json:[/bold green] {path_asn}\n")
 
-            with open(path_asn) as file: data = json.load(file)
+            with open(path_asn) as file:
+                data = json.load(file)
 
             presets = {int(key) for key in data}
 
             for asn in asns:
-                
-                if asn in presets: CONSOLE.print(f"[bold green][+] Validated ASN:[yellow] {asn}"); valid_asn.append(asn)
-                else: CONSOLE.print(f"[bold red][-] Failed to Validated ASN:[yellow] {asn}")
-            
+                if asn in presets:
+                    CONSOLE.print(f"[bold green][+] Validated ASN:[yellow] {asn}")
+                    valid_asn.append(asn)
+                else:
+                    CONSOLE.print(
+                        f"[bold red][-] Failed to Validated ASN:[yellow] {asn}"
+                    )
+
             return path_asn, valid_asn
-        
-        
-        CONSOLE.print("\n[bold red][-] Seems like your missing the asns directory, please check Documentation for fix")
+
+        CONSOLE.print(
+            "\n[bold red][-] Seems like your missing the asns directory, please check Documentation for fix"
+        )
         sys.exit()
-
-
 
     @classmethod
     def get_ip_block(cls, country, CONSOLE=console, verbose=False):
         """This method will be resposnible for getting the block for country"""
 
-
-
-
         path = str(Database.validate_country(country=country, CONSOLE=CONSOLE))
         blocks = []
 
         try:
-
-            with open(path) as file: 
-
+            with open(path) as file:
                 for block in file:
                     blocks.append(block.strip().replace("\t", ""))
-            
-            if verbose: CONSOLE.print(blocks)
-            return blocks
-        
 
-        except Exception as e: 
+            if verbose:
+                CONSOLE.print(blocks)
+            return blocks
+
+        except Exception as e:
             Database.errors += 1
             CONSOLE.print(f"[bold red]Exception Error:[bold yellow] {e}")
 
-    
-     
     @classmethod
     def get_asn(cls, country, asns, CONSOLE=console, verbose=True):
         """This is going to be cool // pass the country and then filter through said country for asns"""
-
 
         # COLORS
         c1 = "bold red"
@@ -661,120 +636,110 @@ class Database:
         c6 = "yellow"
         total_blocks = []
 
-
-        try: asns  = [int(asn) for asn in asns.split(',')]
-        except Exception: asns = list(asns)      
-
+        try:
+            asns = [int(asn) for asn in asns.split(",")]
+        except Exception:
+            asns = list(asns)
 
         Database.validate_country(country=country, CONSOLE=console, verbose=False)
-        path_asn, asns = Database.validate_asn(country=country, asns=asns, CONSOLE=console)
+        path_asn, asns = Database.validate_asn(
+            country=country, asns=asns, CONSOLE=console
+        )
 
-
-        base     = {}
-
-
+        base = {}
 
         CONSOLE.print(f"\n[yellow][*] Target asns:[/yellow] {asns}")
-        
-
 
         try:
-
-
-            with open(path_asn) as file: asn_data = json.load(file)
+            with open(path_asn) as file:
+                asn_data = json.load(file)
             CONSOLE.print("[yellow][+] Pulling blocks <-- asn(s), Please standby\n")
 
-
             for key, value in asn_data.items():
-
                 asn = int(key)
                 country_code = value["country_code"]
-                description  = value["description"]
-                handle       = value["handle"]
+                description = value["description"]
+                handle = value["handle"]
 
                 if asn in asns:
-
                     url = f"https://stat.ripe.net/data/announced-prefixes/data.json?resource={asn}"
 
                     response = requests.get(url=url)
                     resp_data = response.json()
-                    block     = []
+                    block = []
 
                     if response.status_code in OK_STATUS:
-
                         prefixes = resp_data["data"]["prefixes"]
 
                         for cidr in prefixes:
-
-                            prefix = cidr['prefix']
-                            
+                            prefix = cidr["prefix"]
 
                             try:
                                 if ipaddress.IPv4Network(prefix):
+                                    block.append(prefix)
+                                    total_blocks.append(prefix)
 
-                                    block.append(prefix);  total_blocks.append(prefix)
-                            
-                            except Exception as e: CONSOLE.print(f"IPV6: {e}")
-                                
+                            except Exception as e:
+                                CONSOLE.print(f"IPV6: {e}")
+
                         base[asn] = {
                             "asn": asn,
                             "country_code": country_code,
                             "description": description,
                             "handle": handle,
-                            "block": block
+                            "block": block,
                         }
 
                         CONSOLE.print(
-                            f"[{c1}]{"=" * 25}"
+                            f"[{c1}]{'=' * 25}"
                             f"\n[{c4}][+] asn:[{c6}] {asn}"
                             f"\n[{c4}][+] country_code:[{c6}] {country_code}"
                             f"\n[{c4}][+] description:[{c6}] {description}"
                             f"\n[{c4}][+] handle:[{c6}] {handle}"
                             f"\n[{c4}][+] prefix(s):[{c5}] {'\n   '.join(block)}"
-                            f"\n[{c1}]{"=" * 25}"
+                            f"\n[{c1}]{'=' * 25}"
                         )
-            
 
             return base, total_blocks
-    
-        
-        except Exception as e: CONSOLE.print(f"[bold red][-] Exception Error:[bold yellow] {e}")
 
-
-
+        except Exception as e:
+            CONSOLE.print(f"[bold red][-] Exception Error:[bold yellow] {e}")
 
     # WARNING
     @classmethod
     def _download_ip_blocks_for_each_country(cls):
         """This will be a one time use method to automate downloading blocks for each country from ipdeny.com"""
 
-
-
         # WARNING: This is not to be used more than once.
         # If you git cloned this program these files should already be within the database/ip_blocks directory.
 
         try:
-
             # 233 COUNTRYS
 
             ip_block_dir = str(BASE_DIR / "ip_blocks")
             os.chdir(ip_block_dir)
-            console.print(f"[bold green][+] Successfully changed DIR to: {ip_block_dir}")
-            
+            console.print(
+                f"[bold green][+] Successfully changed DIR to: {ip_block_dir}"
+            )
+
             for zone, country in cls.zone_to_country.items():
-                if not country: continue
+                if not country:
+                    continue
 
                 url = f"https://www.ipdeny.com/ipblocks/data/countries/{zone}"
                 safe_country = country.replace(" ", "_")
-                
-                response = requests.get(url=url)
-                
-                if response.status_code in OK_STATUS:
-                    with open(f"{safe_country}.txt", "w") as file: file.write(str(response.text))
-                    console.print(f"[bold green][+] Successfully downloaded:[bold yellow] {country}/{zone} <-> {url}")
-                
-        except Exception as e: console.print(f"[bold red][-] Exception Error:[bold yellow] {e}")
 
+                response = requests.get(url=url)
+
+                if response.status_code in OK_STATUS:
+                    with open(f"{safe_country}.txt", "w") as file:
+                        file.write(str(response.text))
+                    console.print(
+                        f"[bold green][+] Successfully downloaded:[bold yellow] {country}/{zone} <-> {url}"
+                    )
+
+        except Exception as e:
+            console.print(f"[bold red][-] Exception Error:[bold yellow] {e}")
 
     @classmethod
     def _download_asns_within_each_country(cls):
@@ -783,25 +748,22 @@ class Database:
         import csv
 
         try:
-
-   
             asn_file = str(BASE_DIR / "asns" / "info.txt")
 
             console.print(f"[bold green][+] Reading ASN database from: {asn_file}")
-            
-
 
             # Read CSV once, group by country code
             rows_by_code = {}
             with open(asn_file) as file:
                 for row in csv.DictReader(file):
-                    cc = row['country-code'].lower()
+                    cc = row["country-code"].lower()
                     rows_by_code.setdefault(cc, []).append(row)
 
             for zone, country_name in cls.zone_to_country.items():
-                if not country_name: continue
+                if not country_name:
+                    continue
                 safe_country = country_name.replace(" ", "_")
-                code = zone.split('.')[0]
+                code = zone.split(".")[0]
 
                 asns = {}
                 for row in rows_by_code.get(code, []):
@@ -809,90 +771,75 @@ class Database:
                         "country_code": row["country-code"],
                         "asn": row["asn"],
                         "description": row["description"],
-                        "handle": row["handle"]
+                        "handle": row["handle"],
                     }
 
                 save_file = str(BASE_DIR / "asns" / f"{safe_country}.json")
                 with open(save_file, "w") as file:
                     json.dump(asns, file, indent=4)
 
-                console.print(f"[bold green][+] Saved {len(asns)} ASNs for {code}: {save_file}")
+                console.print(
+                    f"[bold green][+] Saved {len(asns)} ASNs for {code}: {save_file}"
+                )
 
-
-
-
-
-        
-
-        except Exception as e: console.print(f"[bold red][-] Exception Error:[bold yellow] {e}")
-    
+        except Exception as e:
+            console.print(f"[bold red][-] Exception Error:[bold yellow] {e}")
 
     @staticmethod
     def _download_ip_blocks_for_asn():
         """This will download all ip blocks for asn given"""
 
-
-
         try:
-
-            asns = [
-                "AS5661"
-            ]
-            
+            asns = ["AS5661"]
 
             package = {}
 
             ip_block_dir = str(BASE_DIR / "asns" / "US")
             os.chdir(ip_block_dir)
-            console.print(f"[bold green][+] Successfully changed DIR to: {ip_block_dir}")
+            console.print(
+                f"[bold green][+] Successfully changed DIR to: {ip_block_dir}"
+            )
 
             for asn in asns:
-
                 url = f"https://stat.ripe.net/data/announced-prefixes/data.json?resource={asn}"
 
                 response = requests.get(url=url)
                 data = response.json()
 
                 if response.status_code in OK_STATUS:
-
                     prefixes = data["data"]["prefixes"]
-                    saved    = []
+                    saved = []
 
                     for cidr in prefixes:
-                        prefix = cidr['prefix']
-                        console.print(f"[bold green] Found Block:[/bold green] {prefix}")
+                        prefix = cidr["prefix"]
+                        console.print(
+                            f"[bold green] Found Block:[/bold green] {prefix}"
+                        )
                         saved.append(prefix)
 
                     package[asn] = saved
 
                     with open(f"{asn}.json", "w") as file:
                         json.dump(package, file, indent=4)
-                    console.print(f"[bold green][+] Successfully downloaded:[bold yellow] {asn}  <-> {url}")
-            
+                    console.print(
+                        f"[bold green][+] Successfully downloaded:[bold yellow] {asn}  <-> {url}"
+                    )
 
-        
-        except Exception as e: console.print(f"[bold red][-] Exception Error:[bold yellow] {e}")
-
-
+        except Exception as e:
+            console.print(f"[bold red][-] Exception Error:[bold yellow] {e}")
 
     @classmethod
     def get_total_ips(cls, blocks):
         """This will be for getting total ip in ip block(s)"""
-
 
         total = sum(ipaddress.IPv4Network(block).num_addresses for block in blocks)
 
         console.print(f"[bold red][*] Total IPv4 Blocks:[/bold red] {len(blocks)}")
         console.print(f"[bold red][*] Total IPv4 Addresses:[/bold red] {total}")
 
-
-
-
-
     @classmethod
     def main(cls, ip, port, CONSOLE=console):
         """This will be the main method for spawning co-methods for Database"""
-
 
         # COLORS
         c2 = "bold yellow"
@@ -900,73 +847,69 @@ class Database:
 
         with LOCK:
             CONSOLE.print(f"\n[{c4}][+] Active IP:[/{c4}] [{c2}]{ip}[/{c2}]:{port}")
-            if   cls.lookup == "local":  Database._get_geo_info_local(ip=ip, CONSOLE=CONSOLE)
-            elif cls.lookup == "ipinfo": Database._get_geo_info_ipinfo(ip=ip, CONSOLE=CONSOLE)
-        
-            if Database.paths: Database._check_paths(ip=ip, port=port, CONSOLE=CONSOLE)
+            if cls.lookup == "local":
+                Database._get_geo_info_local(ip=ip, CONSOLE=CONSOLE)
+            elif cls.lookup == "ipinfo":
+                Database._get_geo_info_ipinfo(ip=ip, CONSOLE=CONSOLE)
 
-
-
-
+            if Database.paths:
+                Database._check_paths(ip=ip, port=port, CONSOLE=CONSOLE)
 
 
 class File_Saver:
     """This class will save files"""
 
-
     path = False
     ips_saved = set()
-
-
 
     @classmethod
     def push_ips_found(cls, data, CONSOLE, save_name=False, verbose=False):
         """This will push current set of ips"""
 
-
-
-        if not cls.path: 
-
-            
+        if not cls.path:
             try:
                 path = BASE_DIR / "saved_ips"
 
                 if path.exists():
-
-
                     timestamp = datetime.now().strftime("%Y_%m_%d__%H_%M_%S")
-                    
-                    if save_name:          cls.path = path / str(save_name)
-                    elif Database.country: cls.path = path / f"{Database.country}_{timestamp}.txt"
-                    else:                  cls.path = path / f"{timestamp}.txt"
 
-                    CONSOLE.print(f"[bold green][+] File Path successfully made:[/bold green] {cls.path}")
+                    if save_name:
+                        cls.path = path / str(save_name)
+                    elif Database.country:
+                        cls.path = path / f"{Database.country}_{timestamp}.txt"
+                    else:
+                        cls.path = path / f"{timestamp}.txt"
 
+                    CONSOLE.print(
+                        f"[bold green][+] File Path successfully made:[/bold green] {cls.path}"
+                    )
 
-            except Exception as e: CONSOLE.print(f"[bold red][-] Exception Error:[bold yellow] {e}")
-            
+            except Exception as e:
+                CONSOLE.print(f"[bold red][-] Exception Error:[bold yellow] {e}")
+
             return
-                
 
-    
         try:
             with LOCK:
                 ips = []
                 for ip in data:
-                    if ip not in cls.ips_saved: ips.append(ip); cls.ips_saved.add(ip)
+                    if ip not in cls.ips_saved:
+                        ips.append(ip)
+                        cls.ips_saved.add(ip)
 
-                if not ips: return
+                if not ips:
+                    return
                 clean = "\n".join(ips) + "\n"
 
+            with open(str(cls.path), "a") as file:
+                file.write(clean)
+            if verbose:
+                CONSOLE.print("[bold green][+] Successfully pushed new info")
 
-            with open(str(cls.path), "a") as file: file.write(clean)
-            if verbose: CONSOLE.print("[bold green][+] Successfully pushed new info")
-
-        
         except FileNotFoundError as e:
             CONSOLE.print(f"[bold red][-] FileNotFoundError:[bold yellow] {e}")
             with open(str(cls.path), "w") as file:
                 file.write("\n".join(data) + "\n")
-        
-        except Exception as e: CONSOLE.print(f"[bold red][-] Exception Error:[bold yellow] {e}")
 
+        except Exception as e:
+            CONSOLE.print(f"[bold red][-] Exception Error:[bold yellow] {e}")
