@@ -99,9 +99,8 @@ class Main():
     database = args.database   or False
 
 
-    # FOR PRESETS    
+    # FOR PRESETS
     paths          = args.paths       or False
-    all            = args.show_all    or False
     
 
     # IRANIAN CRITICAL INFRASTRUCTURE ASN SHORTCUTS (must come before port assignment)
@@ -133,7 +132,6 @@ class Main():
     # SET CONSTANTS
     Mass_IP_Scanner.country = country
     Mass_IP_Scanner.asn        = asn
-    Mass_IP_Scanner.all        = all
     Mass_IP_Scanner.save       = save
     Mass_IP_Scanner.save_name  = save_name
     Mass_IP_Scanner.bloom_size = bloom_size
@@ -156,7 +154,6 @@ class Main():
         elif paths in ["camera"]: Database.paths = Database.paths_camera
 
 
-    Database.ports  = port
     Database.lookup = lookup
     Database.api_key_ipinfo = api_key_ipinfo
 

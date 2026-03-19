@@ -34,7 +34,6 @@ class Mass_IP_Scanner():
     country = False
     asn     = False
 
-    all     = False
     save    = False
     save_name = False   
     bloom_size = 100000000

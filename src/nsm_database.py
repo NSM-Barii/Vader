@@ -25,7 +25,6 @@ class Database():
     
 
     # SET FROM main.py
-    ports = False
     paths = False
 
 
@@ -521,7 +520,6 @@ class Database():
             postal   = city_response.postal.code or False
             timezone = city_response.location.time_zone or False
 
-            asn = asn_response.autonomous_system_number or False
             org = asn_response.autonomous_system_organization or False
                     
 
@@ -783,10 +781,8 @@ class Database():
 
 
 
-        """
-        WARNING THIS IS NOT TO BE USED MORE THEN ONCE 
-        IF YOU GIT CLONED THIS PROGRAM THESE FILES SHOULD ALREADY BE WITHIN THE database/ip_blocks Directory
-        """
+        # WARNING: This is not to be used more than once.
+        # If you git cloned this program these files should already be within the database/ip_blocks directory.
 
         try:
 
