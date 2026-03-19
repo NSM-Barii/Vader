@@ -6,7 +6,7 @@ from rich.console import Console
 
 # ETC IMPORTS
 from pathlib import Path
-import json, requests, mmh3, re, threading, geoip2.database, os, time, sys, ipaddress
+import json, requests, mmh3, re, threading, geoip2.database, os, sys, ipaddress
 from datetime import datetime
 
 
@@ -198,33 +198,6 @@ class Database():
 
 
 
-
-    country_zones = [
-    "af.zone","ax.zone","al.zone","dz.zone","as.zone","ad.zone","ao.zone","ai.zone","aq.zone","ag.zone",
-    "ar.zone","am.zone","aw.zone","au.zone","at.zone","az.zone","bs.zone","bh.zone","bd.zone","bb.zone",
-    "by.zone","be.zone","bz.zone","bj.zone","bm.zone","bt.zone","bo.zone","ba.zone","bw.zone","br.zone",
-    "io.zone","bn.zone","bg.zone","bf.zone","bi.zone","kh.zone","cm.zone","ca.zone","cv.zone","ky.zone",
-    "cf.zone","td.zone","cl.zone","cn.zone","cc.zone","co.zone","km.zone","cg.zone","cd.zone","ck.zone",
-    "cr.zone","ci.zone","hr.zone","cu.zone","cy.zone","cz.zone","dk.zone","dj.zone","dm.zone","do.zone",
-    "ec.zone","eg.zone","sv.zone","gq.zone","er.zone","ee.zone","et.zone","fk.zone","fo.zone","fj.zone",
-    "fi.zone","fr.zone","gf.zone","pf.zone","ga.zone","gm.zone","ge.zone","de.zone","gh.zone","gi.zone",
-    "gr.zone","gl.zone","gd.zone","gp.zone","gu.zone","gt.zone","gn.zone","gw.zone","gy.zone","ht.zone",
-    "va.zone","hn.zone","hk.zone","hu.zone","is.zone","in.zone","id.zone","ir.zone","iq.zone","ie.zone",
-    "im.zone","il.zone","it.zone","jm.zone","jp.zone","je.zone","jo.zone","kz.zone","ke.zone","ki.zone",
-    "kp.zone","kr.zone","kw.zone","kg.zone","la.zone","lv.zone","lb.zone","ls.zone","lr.zone","ly.zone",
-    "li.zone","lt.zone","lu.zone","mo.zone","mk.zone","mg.zone","mw.zone","my.zone","mv.zone","ml.zone",
-    "mt.zone","mh.zone","mq.zone","mr.zone","mu.zone","yt.zone","mx.zone","fm.zone","md.zone","mc.zone",
-    "mn.zone","me.zone","ms.zone","ma.zone","mz.zone","mm.zone","na.zone","nr.zone","np.zone","nl.zone",
-    "nc.zone","nz.zone","ni.zone","ne.zone","ng.zone","nu.zone","nf.zone","mp.zone","no.zone","om.zone",
-    "pk.zone","pw.zone","ps.zone","pa.zone","pg.zone","py.zone","pe.zone","ph.zone","pl.zone","pt.zone",
-    "pr.zone","qa.zone","re.zone","ro.zone","ru.zone","rw.zone","kn.zone","lc.zone","pm.zone","vc.zone",
-    "ws.zone","sm.zone","st.zone","sa.zone","sn.zone","rs.zone","sc.zone","sl.zone","sg.zone","sk.zone",
-    "si.zone","sb.zone","so.zone","za.zone","es.zone","lk.zone","sd.zone","sr.zone","sz.zone","se.zone",
-    "ch.zone","sy.zone","tw.zone","tj.zone","tz.zone","th.zone","tl.zone","tg.zone","tk.zone","to.zone",
-    "tt.zone","tn.zone","tr.zone","tm.zone","tc.zone","tv.zone","ug.zone","ua.zone","ae.zone","gb.zone",
-    "us.zone","um.zone","uy.zone","uz.zone","vu.zone","ve.zone","vn.zone","vg.zone","vi.zone","wf.zone",
-    "ye.zone","zm.zone","zw.zone"
-    ]
 
     zone_to_country = {
         "af.zone": "Afghanistan",
@@ -632,22 +605,18 @@ class Database():
 
 
         path_ip_blocks = Path(__file__).parent.parent / "database" / "ip_blocks"
-        path_country   = Path(__file__).parent.parent / "database" / "ip_blocks" / f"{country}.txt"
+        path_country   = path_ip_blocks / f"{country}.txt"
 
-        if path_ip_blocks.exists():
-
-            for path in path_ip_blocks.iterdir():
-                
-                if path_country == path: 
-
-                    if verbose: CONSOLE.print(f"[bold green][+] Found country.txt:[/bold green] {path_country}")
-                    cls.country=country; return path_country
-            
-
-            CONSOLE.print(f"\n[bold red][-] Invalid country given, please check documentation if your having trouble finding your country")
+        if not path_ip_blocks.exists():
+            CONSOLE.print(f"\n[bold red][-] Seems like your missing the ip_blocks directory, please check Documentation for fix")
             sys.exit()
-        
-        CONSOLE.print(f"\n[bold red][-] Seems like your missing the ip_blocks directory, please check Documentation for fix")
+
+        if path_country.exists():
+            if verbose: CONSOLE.print(f"[bold green][+] Found country.txt:[/bold green] {path_country}")
+            cls.country = country
+            return path_country
+
+        CONSOLE.print(f"\n[bold red][-] Invalid country given, please check documentation if your having trouble finding your country")
         sys.exit()
   
 
@@ -827,7 +796,7 @@ class Database():
             os.chdir(ip_block_dir)
             console.print(f"[bold green][+] Successfully changed DIR to: {ip_block_dir}")
             
-            for zone in cls.country_zones:
+            for zone in cls.zone_to_country:
 
                 url = f"https://www.ipdeny.com/ipblocks/data/countries/{zone}"
                 country  = cls.zone_to_country.get(zone, False)
@@ -838,7 +807,7 @@ class Database():
                 
                 if response.status_code in [200, 204]:
                     with open(f"{safe_country}.txt", "w") as file: file.write(str(response.text))
-                    console.print(f"[bold green][+] Successfully downloaded:[bold yellow] {cls.country}/{cls.zone} <-> {url}")
+                    console.print(f"[bold green][+] Successfully downloaded:[bold yellow] {country}/{zone} <-> {url}")
                 
         except Exception as e: console.print(f"[bold red][-] Exception Error:[bold yellow] {e}")
 
@@ -858,7 +827,7 @@ class Database():
             
 
 
-            for code in cls.country_zones:
+            for code in cls.zone_to_country:
 
 
                 asns = {}
@@ -1059,10 +1028,10 @@ class File_Saver():
             if verbose: CONSOLE.print(f"[bold green][+] Successfully pushed new info")
 
         
-        except FileNotFoundError as e: 
+        except FileNotFoundError as e:
             CONSOLE.print(f"[bold red][-] FileNotFoundError:[bold yellow] {e}")
-            with open(str(cls.path), "w") as file: 
-                file.write(data)
+            with open(str(cls.path), "w") as file:
+                file.write("\n".join(data) + "\n")
         
         except Exception as e: CONSOLE.print(f"[bold red][-] Exception Error:[bold yellow] {e}")
 

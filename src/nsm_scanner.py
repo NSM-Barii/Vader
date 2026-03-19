@@ -33,21 +33,11 @@ class Mass_IP_Scanner():
     # ARGS
     country = False
     asn     = False
-    lookup  = False
 
     all     = False
     save    = False
     save_name = False   
     bloom_size = 100000000
-
-
-    # MODES
-    iot = False
-    nas = False
-    router = False
-    remote = False
-    camera = False
-    database = False
 
 
     # IPS  // THESE ARE USED BY cls._track_ip_blocks() and cls._generate_random_ip()
@@ -82,7 +72,7 @@ class Mass_IP_Scanner():
                             with LOCK: File_Saver.push_ips_found(data=cls.current_ips, CONSOLE=console, verbose=True)
                  
 
-                        c1 = "red"; c2 = "bold green"; c3 = "bold blue"; c4 = "bold yellow"
+                        c1 = "red"; c3 = "bold blue"; c4 = "bold yellow"
 
                         stats = (
                             f"[{c3}] [+] Total online IPv4s:[{c4}] {cls.online_ips}"
