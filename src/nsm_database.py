@@ -606,7 +606,7 @@ class Database:
 
             with open(path_asn) as file: data = json.load(file)
 
-            presets = [int(key) for key in data]
+            presets = {int(key) for key in data}
 
             for asn in asns:
                 
@@ -636,8 +636,7 @@ class Database:
             with open(path) as file: 
 
                 for block in file:
-                    t = block.strip().split("\t"); t = ''.join(t)
-                    blocks.append(t)
+                    blocks.append(block.strip().replace("\t", ""))
             
             if verbose: CONSOLE.print(blocks)
             return blocks
@@ -885,15 +884,8 @@ class Database:
         """This will be for getting total ip in ip block(s)"""
 
 
-        total = 0
+        total = sum(ipaddress.IPv4Network(block).num_addresses for block in blocks)
 
-
-        for block in blocks:
-            network = ipaddress.IPv4Network(block)
-            total += network.num_addresses
-        
-
-        
         console.print(f"[bold red][*] Total IPv4 Blocks:[/bold red] {len(blocks)}")
         console.print(f"[bold red][*] Total IPv4 Addresses:[/bold red] {total}")
 

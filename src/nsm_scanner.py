@@ -113,31 +113,24 @@ class Mass_IP_Scanner:
 
 
     @classmethod
-    def _generate_random_ip(cls, verbose=False):
+    def _generate_random_ip(cls):
         """This will generate a random ip and return it"""
-        
 
         try:
 
-
             if cls.country:
-
-                
                 with LOCK:
                     return Mass_IP_Scanner._track_ip_blocks()
 
             else:
-                
                 with LOCK:
                     if cls.bf_all is None:
                         cls.bf_all = BloomFilter(capacity=cls.bloom_size, error_rate=0.001)
 
-                    random_ip = (f"{random.randint(0,255)}.{random.randint(0,255)}.{random.randint(0,255)}.{random.randint(0,255)}")
+                    random_ip = f"{random.randint(0,255)}.{random.randint(0,255)}.{random.randint(0,255)}.{random.randint(0,255)}"
 
                     if random_ip in cls.bf_all: return False
                     cls.bf_all.add(random_ip); cls.scanned_ips += 1
-
-                    if verbose: console.print(f"[bold green]Generated IP:[bold yellow] {random_ip}")
 
                     return str(random_ip)
 
@@ -151,7 +144,7 @@ class Mass_IP_Scanner:
         """This will validate random ip"""
 
         if not cls.scan: return False
-        ip = Mass_IP_Scanner._generate_random_ip(verbose=False)
+        ip = Mass_IP_Scanner._generate_random_ip()
         if not ip: return
 
 
@@ -211,8 +204,8 @@ class Mass_IP_Scanner:
                     futures = [f for f in futures if not f.done()]  
 
 
-                    if Database.country:  panel.renderable = (f"[{c1}]Filter: [{c2}]{Database.country}  -  [{c1}]Active IPs: [{c2}]{cls.online_ips} / {cls.scanned_ips}  -  [{c1}]Port(s): [{c2}]{portz}  -  [{c1}]Max Workers:[{c2}] {max_workers}  -  [{c1}]Errors:[{c2}] {Database.errors}  -  Developed by NSM Barii")
-                    else: panel.renderable = (f"[{c1}]Active IPs: [{c2}]{cls.online_ips} / {cls.scanned_ips}  -  [{c1}]Port(s): [{c2}]{portz}  -  [{c1}]Max Workers:[{c2}] {max_workers}  -  [{c1}]Errors:[{c2}] {Database.errors}  -  Developed by NSM Barii")
+                    prefix = f"[{c1}]Filter: [{c2}]{Database.country}  -  " if Database.country else ""
+                    panel.renderable = f"{prefix}[{c1}]Active IPs: [{c2}]{cls.online_ips} / {cls.scanned_ips}  -  [{c1}]Port(s): [{c2}]{portz}  -  [{c1}]Max Workers:[{c2}] {max_workers}  -  [{c1}]Errors:[{c2}] {Database.errors}  -  Developed by NSM Barii"
 
 
                     if time.time() - last_save > 5 and cls.save and cls.current_ips:

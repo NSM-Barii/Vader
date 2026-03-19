@@ -148,9 +148,9 @@ class Main:
 
 
     if paths:
-        if   paths in ["nas"]:    Database.paths = Database.paths_nas
-        elif paths in ["router"]: Database.paths = Database.paths_router
-        elif paths in ["camera"]: Database.paths = Database.paths_camera
+        if   paths == "nas":    Database.paths = Database.paths_nas
+        elif paths == "router": Database.paths = Database.paths_router
+        elif paths == "camera": Database.paths = Database.paths_camera
 
 
     Database.lookup = lookup
