@@ -16,7 +16,7 @@ console = Console()
 
 
 
-class Database():
+class Database:
     """This will hold database values"""
 
 
@@ -624,16 +624,15 @@ class Database():
 
 
         path_asn = Path(__file__).parent.parent / "database" / "asns" / f"{country}.json"
-        presets    = []
         valid_asn  = []
 
         if path_asn.exists():
 
             CONSOLE.print(f"[bold green][+] Found asn.json:[/bold green] {path_asn}\n")
 
-            with open(path_asn, "r") as file: data = json.load(file)
+            with open(path_asn) as file: data = json.load(file)
 
-            for key in data: presets.append(int(key))
+            presets = [int(key) for key in data]
 
             for asn in asns:
                 
@@ -660,7 +659,7 @@ class Database():
 
         try:
 
-            with open(path, "r") as file: 
+            with open(path) as file: 
 
                 for block in file:
                     t = block.strip().split("\t"); t = ''.join(t)
@@ -708,7 +707,7 @@ class Database():
         try:
 
 
-            with open(path_asn, "r") as file: data = json.load(file)
+            with open(path_asn) as file: data = json.load(file)
             CONSOLE.print("[yellow][+] Pulling blocks <-- asn(s), Please standby\n") 
                 
 
@@ -832,7 +831,7 @@ class Database():
                 country = country.replace(" ", "_")
                 code = code.split('.')[0]
 
-                with open(asn_file, 'r') as file:
+                with open(asn_file) as file:
                     reader = csv.DictReader(file)
 
 
@@ -965,7 +964,7 @@ class Database():
 
 
 
-class File_Saver():
+class File_Saver:
     """This class will save files"""
 
 

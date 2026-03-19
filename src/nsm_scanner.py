@@ -26,7 +26,7 @@ LOCK = threading.Lock()
 
 
 
-class Mass_IP_Scanner():
+class Mass_IP_Scanner:
     """This class will be responsible for finding active ips on user choosen port"""
 
 

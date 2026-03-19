@@ -20,7 +20,7 @@ from nsm_database import Database
 
 
 
-class Main():
+class Main:
     """This wil launch program wide logic"""
 
 
