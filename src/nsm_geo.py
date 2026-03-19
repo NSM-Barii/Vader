@@ -26,9 +26,8 @@ def get_geo_info_local(ip, db_state, CONSOLE=default_console):
 
     try:
         if not db_state.reader_asn:
-            p1 = "geo_lookup"
-            path_asn = str(BASE_DIR / p1 / "L-ASN" / "L-ASN.mmdb")
-            path_city = str(BASE_DIR / p1 / "L-City" / "L-City.mmdb")
+            path_asn = str(BASE_DIR / "geo_lookup" / "L-ASN" / "L-ASN.mmdb")
+            path_city = str(BASE_DIR / "geo_lookup" / "L-City" / "L-City.mmdb")
             db_state.reader_asn = geoip2.database.Reader(path_asn)
             db_state.reader_city = geoip2.database.Reader(path_city)
 

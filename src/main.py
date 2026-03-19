@@ -28,17 +28,29 @@ from nsm_filesaver import File_Saver
 from rich.panel import Panel
 
 
-class Main:
-    """This wil launch program wide logic"""
+BANNER = (
+    "\n [bold cyan]Mass IP Scanning Framework[/bold cyan]"
+    "\n\n   [bold yellow]Find Vulnerable Devices[/bold yellow]"
+    "\n\n    [bold magenta]Made by NSM-Barii[/bold magenta]\n"
+)
 
-    data = (
-        "\n [bold cyan]Mass IP Scanning Framework[/bold cyan]"
-        "\n\n   [bold yellow]Find Vulnerable Devices[/bold yellow]"
-        "\n\n    [bold magenta]Made by NSM-Barii[/bold magenta]\n"
-    )
+PRESETS = {
+    "iot": (IOT_PORTS, None),
+    "nas": (NAS_PORTS, PATHS_NAS),
+    "router": (ROUTER_PORTS, PATHS_ROUTER),
+    "remote": (REMOTE_PORTS, None),
+    "camera": (CAMERA_PORTS, PATHS_CAMERA),
+    "database": (DATABASE_PORTS, None),
+}
 
-    panel = Panel(renderable=data, expand=False, style="bold red")
+PATHS_MAP = {
+    "nas": PATHS_NAS,
+    "router": PATHS_ROUTER,
+    "camera": PATHS_CAMERA,
+}
 
+
+def main():
     parser = argparse.ArgumentParser(
         description="Mass IP Scanning framework meant to find vulnerable devices left uncheck open to the internet"
     )
@@ -105,22 +117,20 @@ class Main:
     args = parser.parse_args()
 
     if len(sys.argv) == 1:
-        console.print(panel)
+        console.print(Panel(renderable=BANNER, expand=False, style="bold red"))
         parser.print_help()
         exit()
 
     # REQUIRED VARS
-    port = args.p or False
+    port = args.p
     max_threads = args.t or 250
 
     # ADDITIONS
-    country = args.country or False
-    asn = args.asn or False
+    country = args.country
+    asn = args.asn
     bloom_size = int(args.bloom_size) if args.bloom_size else 100000000
-    lookup = args.geo or False
-    api_key_ipinfo = args.ipinfo or False
-    save = args.save or False
-    save_name = args.x or False
+    save = args.save
+    save_name = args.x
 
     # WARNING
     if not country:
@@ -133,17 +143,6 @@ class Main:
         console.print(
             "[bold yellow]    Or increase with --bloom-size (e.g., --bloom-size 500000000) but this uses more RAM.\n"
         )
-
-    # PRESET OPTIONS
-    iot = args.iot or False
-    nas = args.nas or False
-    router = args.router or False
-    remote = args.remote or False
-    camera = args.camera or False
-    database = args.database or False
-
-    # FOR PRESETS
-    paths = args.paths or False
 
     # IRANIAN CRITICAL INFRASTRUCTURE ASN SHORTCUTS (must come before port assignment)
     # TIER 1: CRITICAL INFRASTRUCTURE (Energy, Power Grid, Major Telecom, Transport)
@@ -181,17 +180,8 @@ class Main:
     File_Saver.country = country
 
     # ASSIGN PRESETS
-    PRESETS = {
-        "iot": (IOT_PORTS, None),
-        "nas": (NAS_PORTS, PATHS_NAS),
-        "router": (ROUTER_PORTS, PATHS_ROUTER),
-        "remote": (REMOTE_PORTS, None),
-        "camera": (CAMERA_PORTS, PATHS_CAMERA),
-        "database": (DATABASE_PORTS, None),
-    }
-
     for name, (preset_ports, preset_paths) in PRESETS.items():
-        if locals()[name]:
+        if getattr(args, name):
             port = preset_ports
             if preset_paths:
                 Database.paths = preset_paths
@@ -200,17 +190,11 @@ class Main:
     if port == "1":
         port = CRITICAL_INFRASTRUCTURE_PORTS
 
-    PATHS_MAP = {
-        "nas": PATHS_NAS,
-        "router": PATHS_ROUTER,
-        "camera": PATHS_CAMERA,
-    }
+    if args.paths and args.paths in PATHS_MAP:
+        Database.paths = PATHS_MAP[args.paths]
 
-    if paths and paths in PATHS_MAP:
-        Database.paths = PATHS_MAP[paths]
-
-    Database.lookup = lookup
-    Database.api_key_ipinfo = api_key_ipinfo
+    Database.lookup = args.geo
+    Database.api_key_ipinfo = args.ipinfo
 
     c1 = "red"
     c4 = "bold yellow"
@@ -219,8 +203,8 @@ class Main:
         f"[{c1}][+] Port(s):[{c4}] {port}"
         f"\n[{c1}] [+] Max Workers:[{c4}] {max_threads}"
         f"\n[{c1}] [+] File Saving:[{c4}] {save}"
-        f"\n[{c1}] [+] GEO Lookup:[{c4}] {lookup}"
-        f"\n[{c1}] [+] API Key:[{c4}] {api_key_ipinfo}"
+        f"\n[{c1}] [+] GEO Lookup:[{c4}] {args.geo}"
+        f"\n[{c1}] [+] API Key:[{c4}] {args.ipinfo}"
     )
 
     console.print(
@@ -230,3 +214,7 @@ class Main:
     )
 
     Mass_IP_Scanner._main(port=port, threads=max_threads)
+
+
+if __name__ == "__main__":
+    main()

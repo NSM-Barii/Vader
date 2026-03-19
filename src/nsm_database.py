@@ -152,8 +152,8 @@ class Database:
             CONSOLE.print(f"[bold red]Exception Error:[bold yellow] {e}")
 
     @classmethod
-    def get_asn(cls, country, asns, CONSOLE=console, verbose=True):
-        """This is going to be cool // pass the country and then filter through said country for asns"""
+    def get_asn(cls, country, asns, CONSOLE=console):
+        """Fetch announced prefixes for given ASNs within a country"""
 
         # COLORS
         c1 = "bold red"
@@ -181,50 +181,52 @@ class Database:
                 asn_data = json.load(file)
             CONSOLE.print("[yellow][+] Pulling blocks <-- asn(s), Please standby\n")
 
-            for key, value in asn_data.items():
-                asn = int(key)
+            for asn in asns:
+                value = asn_data.get(str(asn))
+                if not value:
+                    continue
+
                 country_code = value["country_code"]
                 description = value["description"]
                 handle = value["handle"]
 
-                if asn in asns:
-                    url = f"https://stat.ripe.net/data/announced-prefixes/data.json?resource={asn}"
+                url = f"https://stat.ripe.net/data/announced-prefixes/data.json?resource={asn}"
 
-                    response = requests.get(url=url)
-                    resp_data = response.json()
-                    block = []
+                response = requests.get(url=url)
+                resp_data = response.json()
+                block = []
 
-                    if response.status_code in OK_STATUS:
-                        prefixes = resp_data["data"]["prefixes"]
+                if response.status_code in OK_STATUS:
+                    prefixes = resp_data["data"]["prefixes"]
 
-                        for cidr in prefixes:
-                            prefix = cidr["prefix"]
+                    for cidr in prefixes:
+                        prefix = cidr["prefix"]
 
-                            try:
-                                if ipaddress.IPv4Network(prefix):
-                                    block.append(prefix)
-                                    total_blocks.append(prefix)
+                        try:
+                            if ipaddress.IPv4Network(prefix):
+                                block.append(prefix)
+                                total_blocks.append(prefix)
 
-                            except Exception as e:
-                                CONSOLE.print(f"IPV6: {e}")
+                        except Exception as e:
+                            CONSOLE.print(f"IPV6: {e}")
 
-                        base[asn] = {
-                            "asn": asn,
-                            "country_code": country_code,
-                            "description": description,
-                            "handle": handle,
-                            "block": block,
-                        }
+                    base[asn] = {
+                        "asn": asn,
+                        "country_code": country_code,
+                        "description": description,
+                        "handle": handle,
+                        "block": block,
+                    }
 
-                        CONSOLE.print(
-                            f"[{c1}]{'=' * 25}"
-                            f"\n[{c4}][+] asn:[{c6}] {asn}"
-                            f"\n[{c4}][+] country_code:[{c6}] {country_code}"
-                            f"\n[{c4}][+] description:[{c6}] {description}"
-                            f"\n[{c4}][+] handle:[{c6}] {handle}"
-                            f"\n[{c4}][+] prefix(s):[{c5}] {'\n   '.join(block)}"
-                            f"\n[{c1}]{'=' * 25}"
-                        )
+                    CONSOLE.print(
+                        f"[{c1}]{'=' * 25}"
+                        f"\n[{c4}][+] asn:[{c6}] {asn}"
+                        f"\n[{c4}][+] country_code:[{c6}] {country_code}"
+                        f"\n[{c4}][+] description:[{c6}] {description}"
+                        f"\n[{c4}][+] handle:[{c6}] {handle}"
+                        f"\n[{c4}][+] prefix(s):[{c5}] {'\n   '.join(block)}"
+                        f"\n[{c1}]{'=' * 25}"
+                    )
 
             return base, total_blocks
 
