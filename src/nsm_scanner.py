@@ -4,19 +4,17 @@
 
 # UI IMPORTS
 from rich.console import Console
-from rich.table import Table
 from rich.panel import Panel
 from rich.live import Live
-import pyfiglet
 
 
 # NETWORK IMPORTS
-import ipaddress, socket, requests
+import ipaddress, socket
 
 
 # ETC IMPORTS
-import time, random, threading, sys, concurrent.futures; from pybloom_live import BloomFilter
-from concurrent.futures import ThreadPoolExecutor, as_completed
+import time, random, threading, sys; from pybloom_live import BloomFilter
+from concurrent.futures import ThreadPoolExecutor
 
 
 # NSM IMPORTS
