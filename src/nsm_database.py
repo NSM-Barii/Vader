@@ -27,7 +27,6 @@ class Database():
     # SET FROM main.py
     ports = False
     paths = False
-    found = set()
 
 
     # VARS
@@ -496,14 +495,6 @@ class Database():
             
 
 
-    
-    """
-    
-    HIKVISION -->  DNVRS-Webs  http://85.0.232.117/#/portal
-                   DNVRS-Webs
-    HIKIVISION --> 2107490541
-    
-    """
 
 
    
@@ -564,24 +555,7 @@ class Database():
                     server = headers.get("Server", False)
                     x_powered_by = headers.get("X-Powered-By", False)
 
-                    
-                    if False:
-                        for var in cls.server_signatures:
-                            if var == server.strip(): CONSOLE.print(f"Found: {server}")
-                        
-                        for var in cls.html_signatures:
-                            if var == title.strip(): CONSOLE.print(f"Found: {title}")
-                        
-
-                        for camera in ip_camera_favicon_hashes:
-                            if favicon == camera["hash"]:
-                                CONSOLE.print(f"Match found: {camera['model']} at IP {ip} with hash {favicon}")
-                        
-                  
-                  
                     with LOCK:
-                        #if not t: CONSOLE.print(f"title: {title}  server: {server} favicon: {favicon}"); t = True
-                        
                         CONSOLE.print(f"\n[{c4}][+] Active IP:[/{c4}] [{c2}]{ip}[/{c2}]:{port}")
                         CONSOLE.print(
                             f"{space}[{c4}][+] Directory:[{c2}] {url}",
@@ -938,7 +912,7 @@ class Database():
 
                 url = f"https://www.ipdeny.com/ipblocks/data/countries/{zone}"
                 country  = cls.zone_to_country.get(zone, False)
-                if not country: pass
+                if not country: continue
                 safe_country = country.replace(" ", "_")
                 
                 #subprocess.run(f"curl {url} -o  {country}.txt")
@@ -976,10 +950,9 @@ class Database():
 
                 asns = {}
                 country = cls.zone_to_country.get(code, False)
+                if not country: continue
                 country = country.replace(" ", "_")
                 code = code.split('.')[0]
-
-                if not country: pass
 
                 with open(asn_file, 'r') as file:
                     reader = csv.DictReader(file)
