@@ -1,0 +1,360 @@
+# Iranian Critical Infrastructure ASNs
+# Total: 282
+
+
+# ===== GOVERNMENT (15) =====
+AS5542	Ministry of Health Treatment and Medical Education
+AS15907	Imam Khomeini International University of Qazvin
+AS31303	National Iranian Oil Company
+AS42867	National Iranian Oil Company PJSC
+AS56461	Information Technology Organization of Isfahan Municipality
+AS56486	Qom Municipality
+AS56547	Tehran Municipality ICT Organization
+AS60562	Ministry Of Health and Medical Education
+AS60887	International Systems Engineering & Automation Company PJS
+AS61362	Mashhad Municipality Information Technology and Communications Organization
+AS62157	National Iranian Copper Industry Company PJS
+AS205833	Al-mustafa International University
+AS206217	Pars Car International Communication Age PJSC
+AS206692	Information and Communication Technology Organization of Tabriz Municipality
+AS214142	Sepehr Sabz International Middle East Engineering Company PJS
+
+# ===== MILITARY (4) =====
+AS16018	Public JSC Bank Sepah
+AS44375	Asmanfaraz Sepahan Company (P.J.S)
+AS57474	Nazhin Sepahan IT and data processing plc
+AS61962	Sepahan Mapna Equipment Engineering and Manufacturing PJSC
+
+# ===== TELECOM (54) =====
+AS39074	Sepanta Communication Development Co. Ltd
+AS39650	Atrin Information & Communications Technology Company PJS
+AS42019	Aftab Communications and Informatics Private Joint Stock Company
+AS43358	Mobile Communication Company of Iran PLC
+AS44244	Iran Cell Service and Communication Company
+AS44889	Farhang Azma Communications Company LTD
+AS47330	Mobin Net Communication Company (Private Joint Stock)
+AS48159	Telecommunication Infrastructure Company
+AS48203	Simorgh Scientific Network Services and Communication Company PJS
+AS49666	Telecommunication Infrastructure Company
+AS49936	Behsa Communication & Development Co. (Ltd.)
+AS50722	Telecommunication Infrastructure Company
+AS50810	Mobin Net Communication Company (Private Joint Stock)
+AS50992	Telecommunication Infrastructure Company
+AS51119	Iran Telecommunication Company PJS
+AS51235	ARAAX DADEH GOSTAR information and communication Development Co (Private Joint Stock)
+AS51828	Iran Telecommunication Company PJS
+AS51897	MIHAN COMMUNICATION SYSTEMS CO. LTD
+AS52049	Iranian Net Communication and Electronic Services Co PJS
+AS56466	Pars Fonoun Ofogh Information Technology and Communications Company LTD
+AS57218	Rightel Communication Service Company PJS
+AS57292	ICT Research Institute (Iran Telecommunications Research Center ITRC)
+AS57405	MIHAN COMMUNICATION SYSTEMS CO. LTD
+AS58081	Baloot Communication Network Private Limited Company
+AS58085	Iran Telecommunication Company PJS
+AS58205	Part Mehr Iranian High-tech and Telecommunication Cooperative
+AS58224	Iran Telecommunication Company PJS
+AS59587	Iran Telecommunication Company PJS
+AS59628	Iran Telecommunication Company PJS
+AS59884	PERSIA TELECOM COMPANY
+AS60138	Naroon Intelligent Communications LTD.
+AS60340	Iranian company of Saipa automobile manufacturing Public Joint Stock
+AS61008	MIHAN COMMUNICATION SYSTEMS CO. LTD
+AS61391	Simorgh Scientific Network Services and Communication Company PJS
+AS62140	Rightel Communication Service Company PJS
+AS64399	Farhang Azma Communications Company LTD
+AS197207	Mobile Communication Company of Iran PLC
+AS199082	Razavi Information and communication technology company Plc
+AS200370	Farzanegan Pars Communications Company PJS
+AS201689	Lamerd Information & Communication Technology Co. ltd
+AS202684	Paya Communication Industries (PJSC)
+AS202735	Communication Regulatory Authority
+AS204203	Atrin Information & Communications Technology Company PJS
+AS204213	Netmihan Communication Company Ltd
+AS206854	Lesun communication furtherance engineers Co (Ltd.)
+AS207655	Day Telecom Company (ltd.)
+AS209814	Faragostar Shargh Communication Company PJS
+AS210288	Aranik Communications Technology PJSC
+AS210487	Atrin Information & Communications Technology Company PJS
+AS210571	Razavi Information and communication technology company Plc
+AS210621	Novin Hamrah Communication Technology Delevopment PJS Co.
+AS212939	Lamerd Information & Communication Technology Co. ltd
+AS215892	Pooyesh Axe Information and Communication Technology PJS
+AS215974	Taliya Communicational Development Company (Private Joint Stock)
+
+# ===== ENERGY (14) =====
+AS42907	Research Institute Of Petroleum Industry
+AS51168	Greater Tehran Electric Power Distribution PJSC
+AS51554	Pars Oil & Gas Company (Private Joint Stock)
+AS51732	MAPNA Power Plants Development & Construction PLC
+AS52196	Tehran Regional Electricity Joint Stock Company
+AS57577	Iran Power Generation transmission & Distribution Management Co.
+AS59654	Fars Province Gas Company (PJS)
+AS62039	Iran Power Plant Projects Management (MAPNA) PJS
+AS199633	Faradast Energy Falat Co. (Private Joint-Stock)
+AS200376	Tehran Electric Energy Distribution
+AS202788	Khuzestan Water and Power Authority Co. PJS
+AS206929	Gostaresh Energy Pasargad Company (PJS)
+AS208072	Eligasht Air Travel & Tourist Services Company Limited
+AS214737	Iranian Offshore Oil Company
+
+# ===== FINANCE (94) =====
+AS3263	Pishgaman Toseeh Ertebatat Company (Private Joint Stock)
+AS9147	Homaye Jahan Nama Co. ( Private Joint Stock)
+AS15402	Pishgaman Tejarat Sayar Company (Private Joint Stock)
+AS21170	Shazand Petrochemical Company (Private Joint Stock)
+AS24707	Melli Pakhsh Faravardehay Nafti Iran PJSC
+AS31175	Securities and Exchange Organization
+AS31182	SAMAN BANK PJSC
+AS31476	Morva System Engineering Technical Company Private Joint Stock
+AS34871	Part Financial Information Processing Co.
+AS34918	Pishgaman Toseeh Ertebatat Company (Private Joint Stock)
+AS35615	Middle East Bank (PJSC)
+AS35690	IRAN INSURANCE JOINT STOCK COMPANY
+AS39501	Parvaresh Dadeha Co. Private Joint Stock
+AS41061	Iran Zamin Bank PJSC
+AS42143	Iran Airports & Air Navigation Company (Private Joint Stock)
+AS42990	Bank Saderat Iran PJSC
+AS43005	Pishgaman Tejarat Sayar Company (Private Joint Stock)
+AS47603	Zirsakht Pishro Abr Damavand Private Joint Stock Company
+AS47817	Bank Pasargad PJSC
+AS48608	Mellat Insurance Public Joint Stock Company
+AS49100	Pishgaman Toseeh Ertebatat Company (Private Joint Stock)
+AS49433	Bank Refah Kargaran
+AS49972	NAMAVARAN e ASR e Novin Information Technology (FANHAB) Private Joint-Stock Co
+AS50000	Parsian Hamrah Lotus Co.(Private Joint Stock)
+AS50855	Resalat Interest-free loaning Bank PJS
+AS51074	GOSTARESH-E-ERTEBATAT-E MABNA COMPANY (Private Joint Stock)
+AS51130	Homaye Jahan Nama Co. ( Private Joint Stock)
+AS51431	Rasaneh Avabarid Private Joint Stock Company
+AS51460	Sina Bank
+AS51618	Eghtesad Novin Bank PJSC
+AS51785	Karafarin Bank Plc.
+AS52070	Parsian Bank (Public Joint-Stock)
+AS52155	Caspian Applied Systems Services Supplying Company (Private Joint-Stock)
+AS56632	Aryan Satellite Co. (Private Joint Stock)
+AS56660	Pishgaman Toseeh Ertebatat Company (Private Joint Stock)
+AS57241	Maskan Bank
+AS57574	Agriculture Bank PJSC
+AS57755	Pishgaman Toseeh Ertebatat Company (Private Joint Stock)
+AS57831	Pishgaman Toseeh Ertebatat Company (Private Joint Stock)
+AS58216	Pishgaman Toseeh Ertebatat Company (Private Joint Stock)
+AS58333	Saman Insurance Co. (Public Joint Stock)
+AS59442	GOSTARESH-E-ERTEBATAT-E MABNA COMPANY (Private Joint Stock)
+AS59481	Pishgaman Toseeh Ertebatat Company (Private Joint Stock)
+AS59703	Parvaresh Dadeha Co. Private Joint Stock
+AS59708	Rayan Hamafza Company Public Joint Stock
+AS59754	Bank of Industry and Mine PJSC
+AS60256	E-Money Net Developers 24 Company Private Joint Stock
+AS60315	Tehran Securities Exchange Technology Management Co. PLC
+AS60394	Saba Hour Yeganeh Co. ( Private Joint Stock)
+AS60407	Tourism Bank (Public Joint Stock)
+AS60423	E-Money Net Developers 24 Company Private Joint Stock
+AS60516	Bank Ghavamin (Public Joint Stock)
+AS60786	Ava Mehr Informatics Company (Private Joint Stock)
+AS61239	Naji Research & Development Company Private Join-Stock
+AS61250	Ayandeh Bank
+AS62198	Melal Credit Company (Public Joint Stock)
+AS62238	Sina Financial & Investment Holding Co (PJS)
+AS198569	Rahanet Zanjan Co. (Private Joint-Stock)
+AS200796	Data Pardaz Afraz Private Joint Stock Company
+AS200816	Pishgaman Kavir Asia Private Joint Stock
+AS201015	Pishgaman Toseeh Fanavari Etelaat Va Ertebatat Jonoub (Joint Stock Company)
+AS201540	Pishgaman Toseeh Fanavari Etelaat Va Ertebatat Jonoub (Joint Stock Company)
+AS202468	Noyan Abr Arvan Co. ( Private Joint Stock)
+AS202697	Homaye Jahan Nama Co. ( Private Joint Stock)
+AS203162	Charisma Financial Information Processing PJSC
+AS203392	Ayandeh Gostar Bastak Co. (Private Joint Stock)
+AS203684	Imen Sanat Novin Alighapoo Private Joint Stock Company
+AS204687	Saman Air Services (Private joint stock)
+AS204781	BOURS KALAYE IRAN PJSC (Iran Mercantile Exchange)
+AS204812	Pars Tamin Navid Company (Private Joint-Stock)
+AS205118	BOURS KALAYE IRAN PJSC (Iran Mercantile Exchange)
+AS205585	Noyan Abr Arvan Co. ( Private Joint Stock)
+AS205894	Export Development Bank of Iran - Public Joint Stock
+AS206635	Homaye Jahan Nama Co. ( Private Joint Stock)
+AS208246	Iran Fara Bourse Co. (Public Joint Stock)
+AS208493	Pasargad Bank PJSC
+AS208651	Shahr Bank PJSC
+AS208828	Pishgaman Toseeh Ertebatat Company (Private Joint Stock)
+AS209459	Noyan Abr Arvan Co. ( Private Joint Stock)
+AS209941	Saman Smart Financial Solutions JSC
+AS210470	Sarmayeh Bank Public Joint Stock
+AS210818	Ayandeh Gostar Bastak Co. (Private Joint Stock)
+AS211081	Tehran Stock Exchange Company (Public Joint Stock)
+AS211162	Modiriat Saderat Ozhan Mashregh Pars Company PJS
+AS211419	Behsazan Mellat Company PJS
+AS211705	Iranian Electronic Counter Anzali Free Zone(Private Joint Stock Company)
+AS212076	Dadeh Rayanesh Abri Pardis Private Joint Stock Company
+AS212161	Ofogh Koroush Chain Store Public Joint Stock
+AS213682	Charisma Financial Information Processing PJSC
+AS213775	Shabake Tarh Madar Iranian Private Joint Stock Company
+AS213872	Tosee Taavon Bank PJSC
+AS213916	Post Bank of Iran (Public Joint Stock)
+AS215350	Abr Ayande Iranian Co. (Private Joint Stock)
+AS215700	Mabna Financial Data Processing PJS
+
+# ===== TRANSPORT (7) =====
+AS48762	Iran Aseman Airlines PJSC
+AS59961	Road Maintenance & Transportation Organization
+AS201442	IR IRAN Civil Aviation Authority
+AS203026	Ports And Martime Organization
+AS205490	Railways of Islamic Republic of IRAN
+AS208231	Pardis-e BeinolmelalNetwork Support Company (P.J.S)
+AS209079	Imam Khomeini Airport city company
+
+# ===== EDUCATION (88) =====
+AS5627	Shahrood University of Technology
+AS6736	Institute for Research in Fundamental Sciences
+AS12660	Sharif University Of Technology
+AS12880	Iran Information Technology Company PJSC
+AS15611	Iranian Research Organization for Science & Technology
+AS16286	University of Kashan
+AS16292	Kermanshah University of Medical Science and Health Service
+AS29068	University of Tehran
+AS29577	Isfahan University of Technology
+AS34837	Institute for Research in Fundamental Sciences
+AS35043	Allameh Tabataba'i University
+AS35285	Institute for Research in Fundamental Sciences
+AS39200	Institute for Research in Fundamental Sciences
+AS39454	Sindad Network Technology PJSC
+AS41620	Iran University Of Science and Technology
+AS43689	Patron Technology Persia Ltd
+AS43965	Tehran University of Medical Science
+AS44685	Patron Technology Persia Ltd
+AS47285	Patron Technology Persia Ltd
+AS47558	Kajeh Nasir Toosi University of Technology
+AS47981	Iran University of Medical Sciences
+AS48121	Computer research center of Islamic seminary of Isfahan
+AS48551	Sindad Network Technology PJSC
+AS48555	Iranian Information Technology PJSC
+AS48898	Medical Science University Of Kashan
+AS49022	Patron Technology Persia Ltd
+AS49228	Hormozgan University Of Medical Sciences
+AS49676	Sindad Network Technology PJSC
+AS49792	Amirkabir University of Technology
+AS50057	Parvaz System Information Technology Company (Ltd)
+AS50259	Information Technology ArmanNet PLC
+AS56616	Tarahan Shabake Sharif LTD
+AS56765	Shahid Beheshti university
+AS56861	Iranian Information Technology Company PLC
+AS57067	KEYANA Information Technology Co. Ltd.
+AS57563	isfahan university of medical sciences & health services
+AS57745	Tarbiat Modares University
+AS58104	University of Isfahan
+AS58331	Rayaneh Asr-e Ertebat Bam Technology and Engineering Cooperative Co
+AS59506	Shiraz University of Medical Science and Health Care Services
+AS59553	Jahrom Univesity Of Medical Sciences
+AS59623	Zarin Amol Gozar Technology Development Co. Ltd
+AS59794	Amirkabir University of Technology
+AS59912	University of Zanjan
+AS59914	Gerash Information Technology Co
+AS59962	Shiraz University
+AS60148	Iran Information Technology Company PJSC
+AS60778	Patron Technology Persia Ltd
+AS61129	Islamic Azad University
+AS61209	University of Sistan and Baluchestan
+AS61248	Ferdowsi University of Mashhad
+AS62375	Raya Negar Radin Namdar Information and Technology Company (LTD)
+AS64422	SIMA RAYAN SHARIF COMPANY (LTD.)
+AS198357	Padidar Technology PJSC
+AS200406	Javid Berbid Mamasani Information Technology Company PJS
+AS200436	Patron Technology Persia Ltd
+AS202571	Kharazmi University
+AS203024	Shakiba Teb Medical Technology LLC
+AS203102	Kerman University of Medical Sciences
+AS203247	Islamic Azad University
+AS203798	Mashhad University of Medical Sciences
+AS204001	Yazd University
+AS204813	Shahrekord University
+AS204904	University Of Art
+AS205217	Dadeh Pardaz Pouya-e Sharif LLC
+AS205550	Tejarat Iranian Technology infrastructure PJSC
+AS206596	Computer Research Center of Islamic Sciences
+AS206647	Arsan Technology Development Co Ltd
+AS208124	Negin Narmafzar Asak Research and Information Cooperative Company
+AS208268	Parvaz System Information Technology Company (Ltd)
+AS208742	Navaco information technology company (P.J.S.)
+AS209638	Parsian Technology Innovative Solution Co. PJS.
+AS209849	Isfahan University of Technology
+AS210064	Dimit Network Technology Company LLC
+AS210548	Iran Information Technology Company PJSC
+AS210642	Parvaz System Information Technology Company (Ltd)
+AS210877	Towse'e Saman Information Technology Co. PJS
+AS210999	Tose'eh Karafarini va Technologyhaye Hoshmand NeginAsia Co PJS
+AS211491	Shahid Chamran University of Ahvaz
+AS211627	Negin Narmafzar Asak Research and Information Cooperative Company
+AS211670	Fasa University
+AS212227	Ahvaz Jundishapur University of Medical Sciences
+AS212679	Negin Narmafzar Asak Research and Information Cooperative Company
+AS214003	Iranian Research Organization for Science & Technology
+AS214399	Parsian Technology Innovative Solution Co. PJS.
+AS214680	Bu-Ali Sina University
+AS215271	Isfahan Science & Technology Town
+AS215496	DyarWeb Information Technology Ltd
+
+# ===== MEDIA (6) =====
+AS42586	IRIB (Islamic Republic of Iran Broadcasting)
+AS44609	Fars News Agency Cultural Arts Institute
+AS47188	Press TV Co.
+AS62229	Fars News Agency Cultural Arts Institute
+AS204999	Rooyekhat Media Company Ltd
+AS205857	IRIB (Islamic Republic of Iran Broadcasting)
+
+
+# ===== ASN NUMBERS ONLY (HORIZONTAL) =====
+5542  15907  31303  42867  56461  56486  56547  60562  60887  61362
+62157  205833  206217  206692  214142  16018  44375  57474  61962  39074
+39650  42019  43358  44244  44889  47330  48159  48203  49666  49936
+50722  50810  50992  51119  51235  51828  51897  52049  56466  57218
+57292  57405  58081  58085  58205  58224  59587  59628  59884  60138
+60340  61008  61391  62140  64399  197207  199082  200370  201689  202684
+202735  204203  204213  206854  207655  209814  210288  210487  210571  210621
+212939  215892  215974  42907  51168  51554  51732  52196  57577  59654
+62039  199633  200376  202788  206929  208072  214737  3263  9147  15402
+21170  24707  31175  31182  31476  34871  34918  35615  35690  39501
+41061  42143  42990  43005  47603  47817  48608  49100  49433  49972
+50000  50855  51074  51130  51431  51460  51618  51785  52070  52155
+56632  56660  57241  57574  57755  57831  58216  58333  59442  59481
+59703  59708  59754  60256  60315  60394  60407  60423  60516  60786
+61239  61250  62198  62238  198569  200796  200816  201015  201540  202468
+202697  203162  203392  203684  204687  204781  204812  205118  205585  205894
+206635  208246  208493  208651  208828  209459  209941  210470  210818  211081
+211162  211419  211705  212076  212161  213682  213775  213872  213916  215350
+215700  48762  59961  201442  203026  205490  208231  209079  5627  6736
+12660  12880  15611  16286  16292  29068  29577  34837  35043  35285
+39200  39454  41620  43689  43965  44685  47285  47558  47981  48121
+48551  48555  48898  49022  49228  49676  49792  50057  50259  56616
+56765  56861  57067  57563  57745  58104  58331  59506  59553  59623
+59794  59912  59914  59962  60148  60778  61129  61209  61248  62375
+64422  198357  200406  200436  202571  203024  203102  203247  203798  204001
+204813  204904  205217  205550  206596  206647  208124  208268  208742  209638
+209849  210064  210548  210642  210877  210999  211491  211627  211670  212227
+212679  214003  214399  214680  215271  215496  42586  44609  47188  62229
+204999  205857
+
+
+# ===== BY ORGANIZATION (COMMA SEPARATED) =====
+
+GOVERNMENT:
+5542,15907,31303,42867,56461,56486,56547,60562,60887,61362,62157,205833,206217,206692,214142
+
+MILITARY:
+16018,44375,57474,61962
+
+TELECOM:
+39074,39650,42019,43358,44244,44889,47330,48159,48203,49666,49936,50722,50810,50992,51119,51235,51828,51897,52049,56466,57218,57292,57405,58081,58085,58205,58224,59587,59628,59884,60138,60340,61008,61391,62140,64399,197207,199082,200370,201689,202684,202735,204203,204213,206854,207655,209814,210288,210487,210571,210621,212939,215892,215974
+
+ENERGY:
+42907,51168,51554,51732,52196,57577,59654,62039,199633,200376,202788,206929,208072,214737
+
+FINANCE:
+3263,9147,15402,21170,24707,31175,31182,31476,34871,34918,35615,35690,39501,41061,42143,42990,43005,47603,47817,48608,49100,49433,49972,50000,50855,51074,51130,51431,51460,51618,51785,52070,52155,56632,56660,57241,57574,57755,57831,58216,58333,59442,59481,59703,59708,59754,60256,60315,60394,60407,60423,60516,60786,61239,61250,62198,62238,198569,200796,200816,201015,201540,202468,202697,203162,203392,203684,204687,204781,204812,205118,205585,205894,206635,208246,208493,208651,208828,209459,209941,210470,210818,211081,211162,211419,211705,212076,212161,213682,213775,213872,213916,215350,215700
+
+TRANSPORT:
+48762,59961,201442,203026,205490,208231,209079
+
+EDUCATION:
+5627,6736,12660,12880,15611,16286,16292,29068,29577,34837,35043,35285,39200,39454,41620,43689,43965,44685,47285,47558,47981,48121,48551,48555,48898,49022,49228,49676,49792,50057,50259,56616,56765,56861,57067,57563,57745,58104,58331,59506,59553,59623,59794,59912,59914,59962,60148,60778,61129,61209,61248,62375,64422,198357,200406,200436,202571,203024,203102,203247,203798,204001,204813,204904,205217,205550,206596,206647,208124,208268,208742,209638,209849,210064,210548,210642,210877,210999,211491,211627,211670,212227,212679,214003,214399,214680,215271,215496
+
+MEDIA:
+42586,44609,47188,62229,204999,205857

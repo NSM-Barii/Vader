@@ -44,8 +44,7 @@ class Database:
                     response.text,
                     re.IGNORECASE | re.DOTALL,
                 )
-                if match:
-                    title = match.group(1).strip()
+                if match: title = match.group(1).strip()
                 status = response.status_code
                 redirect = response.url if response.url != url else False
                 content_length = len(response.text) or False
@@ -76,8 +75,7 @@ class Database:
     def _check_paths(cls, ip, port, CONSOLE=console, timeout=1, errors=False):
         """This will check path signatures"""
 
-        if not cls.paths:
-            return
+        if not cls.paths: return
 
         for path in cls.paths:
             cls._probe_path(
@@ -91,11 +89,7 @@ class Database:
         path_ip_blocks = BASE_DIR / "ip_blocks"
         path_country = path_ip_blocks / f"{country}.txt"
 
-        if not path_ip_blocks.exists():
-            CONSOLE.print(
-                "\n[bold red][-] Seems like your missing the ip_blocks directory, please check Documentation for fix"
-            )
-            sys.exit()
+        if not path_ip_blocks.exists(): CONSOLE.print("\n[bold red][-] Seems like your missing the ip_blocks directory, please check Documentation for fix"); sys.exit()
 
         if path_country.exists():
             if verbose:
@@ -191,8 +185,7 @@ class Database:
 
             for asn in asns:
                 value = asn_data.get(str(asn))
-                if not value:
-                    continue
+                if not value: continue
 
                 country_code = value["country_code"]
                 description = value["description"]
@@ -287,8 +280,7 @@ class Database:
             )
 
             for zone, country in ZONE_TO_COUNTRY.items():
-                if not country:
-                    continue
+                if not country: continue
 
                 url = f"https://www.ipdeny.com/ipblocks/data/countries/{zone}"
                 safe_country = country.replace(" ", "_")
@@ -324,8 +316,7 @@ class Database:
                     rows_by_code.setdefault(cc, []).append(row)
 
             for zone, country_name in ZONE_TO_COUNTRY.items():
-                if not country_name:
-                    continue
+                if not country_name: continue
                 safe_country = country_name.replace(" ", "_")
                 code = zone.split(".")[0]
 
