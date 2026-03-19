@@ -892,41 +892,34 @@ class Database():
             ]
             
 
-            # 233 COUNTRYS
             package = {}
 
             ip_block_dir = str(Path(__file__).parent.parent / "database" / "asns" / "US")
             os.chdir(ip_block_dir)
             console.print(f"[bold green][+] Successfully changed DIR to: {ip_block_dir}")
-            
+
             for asn in asns:
 
                 url = f"https://stat.ripe.net/data/announced-prefixes/data.json?resource={asn}"
 
                 response = requests.get(url=url)
                 data = response.json()
-                
+
                 if response.status_code in [200, 204]:
-                    
 
                     prefixes = data["data"]["prefixes"]
                     saved    = []
 
                     for cidr in prefixes:
-
                         prefix = cidr['prefix']
-
                         console.print(f"[bold green] Found Block:[/bold green] {prefix}")
                         saved.append(prefix)
-                          
 
                     package[asn] = saved
 
-
-
-                with open(f"{asn}.json", "w") as file: 
-                    json.dump(package, file, indent=4)
-                console.print(f"[bold green][+] Successfully downloaded:[bold yellow] {asn}  <-> {url}")
+                    with open(f"{asn}.json", "w") as file:
+                        json.dump(package, file, indent=4)
+                    console.print(f"[bold green][+] Successfully downloaded:[bold yellow] {asn}  <-> {url}")
             
 
         

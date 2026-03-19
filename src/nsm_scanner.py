@@ -13,7 +13,7 @@ import ipaddress, socket
 
 
 # ETC IMPORTS
-import time, random, threading, sys; from pybloom_live import BloomFilter
+import time, random, threading; from pybloom_live import BloomFilter
 from concurrent.futures import ThreadPoolExecutor
 
 
@@ -227,7 +227,7 @@ class Mass_IP_Scanner():
                         cls.scan = False
                         return False
 
-            except KeyboardInterrupt as e:
+            except KeyboardInterrupt:
                 console.print("[bold red][-] Killing ALL Threads...."); cls.scan=False
                 executor.shutdown(wait=False, cancel_futures=True)
 
@@ -272,5 +272,5 @@ class Mass_IP_Scanner():
 
   
 
-if __name__ =="__main__":
-    Mass_IP_Scanner._main()
+if __name__ == "__main__":
+    Mass_IP_Scanner._main(port=None, threads=250)
