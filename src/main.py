@@ -150,7 +150,7 @@ class Main():
 
     # ASSIGN PRESETS
     if iot:        port = Database.IOT_PORTS
-    elif nas:      port = Database.paths_nas      ; Database.paths = Database.paths_nas
+    elif nas:      port = Database.NAS_PORTS       ; Database.paths = Database.paths_nas
     elif router:   port = Database.ROUTER_PORTS   ; Database.paths = Database.paths_router
     elif remote:   port = Database.REMOTE_PORTS
     elif camera:   port = Database.CAMERA_PORTS   ; Database.paths = Database.paths_camera
