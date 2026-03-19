@@ -13,6 +13,7 @@ from datetime import datetime
 LOCK = threading.Lock()
 console = Console()
 BASE_DIR = Path(__file__).parent.parent / "database"
+OK_STATUS = (200, 204)
 
 
 
@@ -475,7 +476,7 @@ class Database:
                 response = requests.get(url=url, timeout=timeout)
                 headers = response.headers
 
-                if response.status_code in [200,204]:
+                if response.status_code in OK_STATUS:
 
                      
 
@@ -551,7 +552,7 @@ class Database:
             response = requests.get(url=url, timeout=timeout)
             data = response.json()
 
-            if response.status_code in [200,204]:
+            if response.status_code in OK_STATUS:
 
                 if verbose: CONSOLE.print(data)
 
@@ -680,32 +681,28 @@ class Database:
         try:
 
 
-            with open(path_asn) as file: data = json.load(file)
-            CONSOLE.print("[yellow][+] Pulling blocks <-- asn(s), Please standby\n") 
-                
+            with open(path_asn) as file: asn_data = json.load(file)
+            CONSOLE.print("[yellow][+] Pulling blocks <-- asn(s), Please standby\n")
 
 
-            for key, value in data.items():
-                
+            for key, value in asn_data.items():
 
                 asn = int(key)
                 country_code = value["country_code"]
                 description  = value["description"]
                 handle       = value["handle"]
 
-                
                 if asn in asns:
-
 
                     url = f"https://stat.ripe.net/data/announced-prefixes/data.json?resource={asn}"
 
                     response = requests.get(url=url)
-                    data     = response.json()
-                    block    = []
-                    
-                    if response.status_code in [200, 204]:
-                        
-                        prefixes = data["data"]["prefixes"]
+                    resp_data = response.json()
+                    block     = []
+
+                    if response.status_code in OK_STATUS:
+
+                        prefixes = resp_data["data"]["prefixes"]
 
                         for cidr in prefixes:
 
@@ -764,16 +761,15 @@ class Database:
             os.chdir(ip_block_dir)
             console.print(f"[bold green][+] Successfully changed DIR to: {ip_block_dir}")
             
-            for zone in cls.zone_to_country:
+            for zone, country in cls.zone_to_country.items():
+                if not country: continue
 
                 url = f"https://www.ipdeny.com/ipblocks/data/countries/{zone}"
-                country  = cls.zone_to_country.get(zone, False)
-                if not country: continue
                 safe_country = country.replace(" ", "_")
                 
                 response = requests.get(url=url)
                 
-                if response.status_code in [200, 204]:
+                if response.status_code in OK_STATUS:
                     with open(f"{safe_country}.txt", "w") as file: file.write(str(response.text))
                     console.print(f"[bold green][+] Successfully downloaded:[bold yellow] {country}/{zone} <-> {url}")
                 
@@ -857,7 +853,7 @@ class Database:
                 response = requests.get(url=url)
                 data = response.json()
 
-                if response.status_code in [200, 204]:
+                if response.status_code in OK_STATUS:
 
                     prefixes = data["data"]["prefixes"]
                     saved    = []
