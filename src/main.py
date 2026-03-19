@@ -20,15 +20,6 @@ from nsm_database import Database
 
 
 
-class Program_Vars():
-    """This will be used to pass vars from argparse to a class that stores them"""
-
-
-    api_key_ipinfo = False
-
-
-
-
 class Main():
     """This wil launch program wide logic"""
 
@@ -181,13 +172,6 @@ class Main():
         f"\n[{c1}] [+] API Key:[{c4}] {api_key_ipinfo}"
     )
 
-    panel  = Panel(renderable= stats,        
-        title="Constants",
-        border_style="purple",
-        style="bold red",
-        expand=False 
-    )
-    
     console.print(
         f"[{c1}]=========   CONSTANTS   =========\n",
         stats,

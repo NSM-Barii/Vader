@@ -161,15 +161,6 @@ class Mass_IP_Scanner():
     def _random_ip_validator(cls, ports, timeout=3, verbose=False):
         """This will validate random ip"""
 
-
-
-        # COLORS
-        c1 = "bold red"
-        c2 = "bold yellow"
-        c3 = "bold blue"
-        c4 = "bold green"
-
-        
         if not cls.scan: return False
         ip = Mass_IP_Scanner._generate_random_ip(verbose=False)
         if not ip: return
@@ -204,10 +195,6 @@ class Mass_IP_Scanner():
         # COLORS
         c1 = "bold red"
         c2 = "bold yellow"
-        c3 = "bold blue"
-        c4 = "bold green"
-        c5 = "white"
-
 
         futures = []
         last_save = time.time()
