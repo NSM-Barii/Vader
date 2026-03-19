@@ -493,7 +493,7 @@ class Database():
 
 
     @classmethod
-    def _get_geo_info_local(cls, ip, CONSOLE=console, verbose=True):
+    def _get_geo_info_local(cls, ip, CONSOLE=console):
         """This method will be used to get our own in house geo ip info"""
 
         # COLORS
@@ -633,7 +633,7 @@ class Database():
 
             with open(path_asn, "r") as file: data = json.load(file)
 
-            for key, value in data.items(): presets.append(int(key))
+            for key in data: presets.append(int(key))
 
             for asn in asns:
                 
@@ -955,7 +955,7 @@ class Database():
 
         with LOCK:
             CONSOLE.print(f"\n[{c4}][+] Active IP:[/{c4}] [{c2}]{ip}[/{c2}]:{port}")
-            if   cls.lookup == "local":  Database._get_geo_info_local(ip=ip, CONSOLE=CONSOLE, verbose=False)
+            if   cls.lookup == "local":  Database._get_geo_info_local(ip=ip, CONSOLE=CONSOLE)
             elif cls.lookup == "ipinfo": Database._get_geo_info_ipinfo(ip=ip, CONSOLE=CONSOLE)
         
             if Database.paths: Database._check_paths(ip=ip, port=port, CONSOLE=CONSOLE)
@@ -1010,6 +1010,7 @@ class File_Saver():
                 for ip in data:
                     if ip not in cls.ips_saved: ips.append(ip); cls.ips_saved.add(ip)
 
+                if not ips: return
                 clean = "\n".join(ips) + "\n"
 
 
