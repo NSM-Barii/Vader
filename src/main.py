@@ -181,32 +181,33 @@ class Main:
     File_Saver.country = country
 
     # ASSIGN PRESETS
-    if iot:
-        port = IOT_PORTS
-    elif nas:
-        port = NAS_PORTS
-        Database.paths = PATHS_NAS
-    elif router:
-        port = ROUTER_PORTS
-        Database.paths = PATHS_ROUTER
-    elif remote:
-        port = REMOTE_PORTS
-    elif camera:
-        port = CAMERA_PORTS
-        Database.paths = PATHS_CAMERA
-    elif database:
-        port = DATABASE_PORTS
+    PRESETS = {
+        "iot": (IOT_PORTS, None),
+        "nas": (NAS_PORTS, PATHS_NAS),
+        "router": (ROUTER_PORTS, PATHS_ROUTER),
+        "remote": (REMOTE_PORTS, None),
+        "camera": (CAMERA_PORTS, PATHS_CAMERA),
+        "database": (DATABASE_PORTS, None),
+    }
+
+    for name, (preset_ports, preset_paths) in PRESETS.items():
+        if locals()[name]:
+            port = preset_ports
+            if preset_paths:
+                Database.paths = preset_paths
+            break
 
     if port == "1":
         port = CRITICAL_INFRASTRUCTURE_PORTS
 
-    if paths:
-        if paths == "nas":
-            Database.paths = PATHS_NAS
-        elif paths == "router":
-            Database.paths = PATHS_ROUTER
-        elif paths == "camera":
-            Database.paths = PATHS_CAMERA
+    PATHS_MAP = {
+        "nas": PATHS_NAS,
+        "router": PATHS_ROUTER,
+        "camera": PATHS_CAMERA,
+    }
+
+    if paths and paths in PATHS_MAP:
+        Database.paths = PATHS_MAP[paths]
 
     Database.lookup = lookup
     Database.api_key_ipinfo = api_key_ipinfo
