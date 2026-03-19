@@ -6,9 +6,7 @@ from rich.console import Console
 
 # ETC IMPORTS
 from pathlib import Path
-import json, requests, mmh3, re, threading, geoip2.database, subprocess, os, time, sys, ipaddress
-from pymongo import MongoClient
-from urllib.parse import urljoin, urlparse
+import json, requests, mmh3, re, threading, geoip2.database, os, time, sys, ipaddress
 from datetime import datetime
 
 
