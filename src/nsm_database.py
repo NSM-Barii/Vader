@@ -726,7 +726,7 @@ class Database():
         path_ip_blocks = Path(__file__).parent.parent / "database" / "ip_blocks"
         path_country   = Path(__file__).parent.parent / "database" / "ip_blocks" / f"{country}.txt"
 
-        if path_ip_blocks.exists:
+        if path_ip_blocks.exists():
 
             for path in path_ip_blocks.iterdir():
                 
@@ -752,7 +752,7 @@ class Database():
         presets    = []
         valid_asn  = []
 
-        if path_asn.exists:
+        if path_asn.exists():
 
             CONSOLE.print(f"[bold green][+] Found asn.json:[/bold green] {path_asn}\n")
 
