@@ -175,13 +175,10 @@ class Mass_IP_Scanner():
         if not ip: return
 
 
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            
-            
-            try:
-                
+        try:
 
-                for port in ports:
+            for port in ports:
+                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     s.settimeout(timeout)
                     result = s.connect_ex((ip, int(port)))
 
@@ -195,9 +192,9 @@ class Mass_IP_Scanner():
                         Database.main(ip=ip, port=port, CONSOLE=console)
 
 
-            except Exception as e: 
-                Database.errors += 1
-                console.print(f"[bold red]Exception Error:[bold yellow] {e}")
+        except Exception as e:
+            Database.errors += 1
+            console.print(f"[bold red]Exception Error:[bold yellow] {e}")
     
    
     @classmethod
