@@ -58,7 +58,6 @@ class Main():
     parser.add_argument("--remote", action="store_true", help="Scan for remote access services (RDP, VNC, SSH, FTP).")
     parser.add_argument("--database", action="store_true", help="Scan for open databases (3306, 5432, 27017, 6379, 9200).")
     
-    parser.add_argument("--show-all", action="store_true", help="Show all active IPS")
     parser.add_argument("--paths",  help="Manually set path for directory bruteforcing (nas, router, camera).")
 
 
