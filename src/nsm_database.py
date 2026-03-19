@@ -22,59 +22,67 @@ class Database:
     reader_asn = False
     reader_city = False
 
+    @staticmethod
+    def _probe_path(ip, port, path, CONSOLE=console, timeout=1, errors=False):
+        """Probe a single path on an IP and print results if reachable"""
+
+        space = "    "
+        c1 = "bold red"
+        c2 = "bold yellow"
+        c4 = "bold green"
+
+        try:
+            url = f"http://{ip}{path}"
+            response = requests.get(url=url, timeout=timeout)
+            headers = response.headers
+
+            if response.status_code in OK_STATUS:
+                favicon = mmh3.hash(response.content)
+                title = False
+                match = re.search(
+                    r"<title>(.*?)</title>",
+                    response.text,
+                    re.IGNORECASE | re.DOTALL,
+                )
+                if match:
+                    title = match.group(1).strip()
+                status = response.status_code
+                redirect = response.url if response.url != url else False
+                content_length = len(response.text) or False
+                server = headers.get("Server", False)
+                x_powered_by = headers.get("X-Powered-By", False)
+
+                with LOCK:
+                    CONSOLE.print(
+                        f"\n[{c4}][+] Active IP:[/{c4}] [{c2}]{ip}[/{c2}]:{port}"
+                    )
+                    CONSOLE.print(
+                        f"{space}[{c4}][+] Directory:[{c2}] {url}",
+                        f"\n{space}[{c4 if status else c1}][+] Status:[{c2}] {status}",
+                        f"\n{space}[{c4 if title else c1}][+] Title:[{c2}] {title}",
+                        f"\n{space}[{c4 if server else c1}][+] Server:[{c2}] {server}",
+                        f"\n{space}[{c4 if redirect else c1}][+] Redirect:[{c2}] {redirect}",
+                        f"\n{space}[{c4 if content_length else c1}][+] Content-Length:[{c2}] {content_length}",
+                        f"\n{space}[{c4 if x_powered_by else c1}][+] Powered-by:[{c2}] {x_powered_by}",
+                        f"\n{space}[{c4 if favicon else c1}][+] Favicon:[{c2}] {favicon}",
+                    )
+
+        except Exception as e:
+            Database.errors += 1
+            if errors:
+                CONSOLE.print(f"[bold red][-] Exception Error:[bold yellow] {e}")
+
     @classmethod
     def _check_paths(cls, ip, port, CONSOLE=console, timeout=1, errors=False):
         """This will check path signatures"""
 
         if not cls.paths:
             return
-        space = "    "
-        c1 = "bold red"
-        c2 = "bold yellow"
-        c4 = "bold green"
 
         for path in cls.paths:
-            try:
-                url = f"http://{ip}{path}"
-
-                response = requests.get(url=url, timeout=timeout)
-                headers = response.headers
-
-                if response.status_code in OK_STATUS:
-                    favicon = mmh3.hash(response.content)
-                    title = False
-                    match = re.search(
-                        r"<title>(.*?)</title>",
-                        response.text,
-                        re.IGNORECASE | re.DOTALL,
-                    )
-                    if match:
-                        title = match.group(1).strip()
-                    status = response.status_code
-                    redirect = response.url if response.url != url else False
-                    content_length = len(response.text) or False
-                    server = headers.get("Server", False)
-                    x_powered_by = headers.get("X-Powered-By", False)
-
-                    with LOCK:
-                        CONSOLE.print(
-                            f"\n[{c4}][+] Active IP:[/{c4}] [{c2}]{ip}[/{c2}]:{port}"
-                        )
-                        CONSOLE.print(
-                            f"{space}[{c4}][+] Directory:[{c2}] {url}",
-                            f"\n{space}[{c4 if status else c1}][+] Status:[{c2}] {status}",
-                            f"\n{space}[{c4 if title else c1}][+] Title:[{c2}] {title}",
-                            f"\n{space}[{c4 if server else c1}][+] Server:[{c2}] {server}",
-                            f"\n{space}[{c4 if redirect else c1}][+] Redirect:[{c2}] {redirect}",
-                            f"\n{space}[{c4 if content_length else c1}][+] Content-Length:[{c2}] {content_length}",
-                            f"\n{space}[{c4 if x_powered_by else c1}][+] Powered-by:[{c2}] {x_powered_by}",
-                            f"\n{space}[{c4 if favicon else c1}][+] Favicon:[{c2}] {favicon}",
-                        )
-
-            except Exception as e:
-                Database.errors += 1
-                if errors:
-                    CONSOLE.print(f"[bold red][-] Exception Error:[bold yellow] {e}")
+            cls._probe_path(
+                ip, port, path, CONSOLE=CONSOLE, timeout=timeout, errors=errors
+            )
 
     @classmethod
     def validate_country(cls, country, CONSOLE=console, verbose=True):
