@@ -1134,7 +1134,7 @@ class File_Saver():
 
 
     path = False
-    ips_saved = []
+    ips_saved = set()
 
 
 
@@ -1172,7 +1172,7 @@ class File_Saver():
             with LOCK:
                 ips = []
                 for ip in data:
-                    if ip not in cls.ips_saved: ips.append(ip); cls.ips_saved.append(ip)
+                    if ip not in cls.ips_saved: ips.append(ip); cls.ips_saved.add(ip)
 
                 clean = "\n".join(ips) + "\n"
 
