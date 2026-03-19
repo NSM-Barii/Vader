@@ -12,6 +12,7 @@ import ipaddress, socket
 
 # ETC IMPORTS
 import time, random
+from collections import deque
 from pybloom_live import BloomFilter
 from concurrent.futures import ThreadPoolExecutor
 
@@ -79,7 +80,7 @@ class Mass_IP_Scanner:
                     cls.leave = True
                     return False
 
-                cls.current_block = cls.blocks.pop(0)
+                cls.current_block = cls.blocks.popleft()
                 network = ipaddress.IPv4Network(cls.current_block)
                 cls.total_ips += network.num_addresses
                 cls._block_iter = iter(network)
@@ -109,7 +110,7 @@ class Mass_IP_Scanner:
         try:
             if cls.country:
                 with LOCK:
-                    return Mass_IP_Scanner._track_ip_blocks()
+                    return cls._track_ip_blocks()
 
             else:
                 with LOCK:
@@ -137,7 +138,7 @@ class Mass_IP_Scanner:
 
         if not cls.scan:
             return False
-        ip = Mass_IP_Scanner._generate_random_ip()
+        ip = cls._generate_random_ip()
         if not ip:
             return
 
@@ -185,9 +186,7 @@ class Mass_IP_Scanner:
                 while cls.scan:
                     while len(futures) < max_workers and cls.scan:
                         futures.append(
-                            executor.submit(
-                                Mass_IP_Scanner._random_ip_validator, portz, timeout
-                            )
+                            executor.submit(cls._random_ip_validator, portz, timeout)
                         )
 
                     futures = [f for f in futures if not f.done()]
@@ -240,14 +239,17 @@ class Mass_IP_Scanner:
 
         print("\n")
         if cls.country:
-            cls.blocks = Database.get_ip_block(country=cls.country, CONSOLE=console)
-            cls.total_blocks = cls.blocks.copy()
+            cls.blocks = deque(
+                Database.get_ip_block(country=cls.country, CONSOLE=console)
+            )
+            cls.total_blocks = list(cls.blocks)
         if cls.save:
             File_Saver.push_ips_found(
                 data=False, CONSOLE=console, save_name=cls.save_name
             )
         if cls.asn:
-            _, cls.blocks = Database.get_asn(country=cls.country, asns=cls.asn)
+            _, blocks = Database.get_asn(country=cls.country, asns=cls.asn)
+            cls.blocks = deque(blocks)
 
         if cls.country:
             Database.get_total_ips(blocks=cls.blocks)
@@ -268,9 +270,7 @@ class Mass_IP_Scanner:
                 cls.scan = True
                 cls.last_scan = 0
                 time.sleep(5)
-                Mass_IP_Scanner._ip_threader(
-                    ports=port, max_workers=threads or 250, panel=panel
-                )
+                cls._ip_threader(ports=port, max_workers=threads or 250, panel=panel)
 
 
 if __name__ == "__main__":

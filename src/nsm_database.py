@@ -112,7 +112,7 @@ class Database:
 
     @classmethod
     def validate_asn(cls, country, asns, CONSOLE=console):
-        """This will be used to validate user inputted country"""
+        """This will be used to validate user inputted ASNs"""
 
         path_asn = BASE_DIR / "asns" / f"{country}.json"
         valid_asn = []
@@ -143,7 +143,7 @@ class Database:
 
     @classmethod
     def get_ip_block(cls, country, CONSOLE=console, verbose=False):
-        """This method will be resposnible for getting the block for country"""
+        """This method will be responsible for getting the block for country"""
 
         path = str(Database.validate_country(country=country, CONSOLE=CONSOLE))
 
