@@ -133,32 +133,11 @@ class Mass_IP_Scanner():
         try:
 
 
-            # I USUALLY DONT USE COMMENTS SINCE THERE FOR SKIDS
-            # BUT THIS WAS EXTREMELY COMPLEX CODE TO DESIGN/DEBUG
             if cls.country:
 
                 
                 with LOCK:
                     return Mass_IP_Scanner._track_ip_blocks()
-
-
-                
-                """
-
-                // THE METHOD BELOW IS NOW DEAPPRECIATED, WILL BE KEEPING FOR DOCUMENTATION
-
-                network = [ipaddress.IPv4Network(str(block)) for block in cls.current_block]
-                network = random.choice(network)
-
-                # PICK A RANDOM NUMBER BETWEEN THE NETWORKS START AND END IP (AS INTEGERS) 
-                # EXAMPLE --> 122.X.X.122  //  122 == START / 122 == END
-                random_ip_int = random.randint(int(network.network_address), int(network.broadcast_address))
-
-                # CONVERT THAT INTEGER BACK INTO A NORMAL X.X.X.X IPV4 ADDRESS
-                random_ip     = ipaddress.IPv4Address(random_ip_int)
-                
-                """
-                 
 
             else:
                 
@@ -205,12 +184,10 @@ class Mass_IP_Scanner():
                 
 
                 for port in ports:
-                    #pkt = IP(dst=ip)/TCP(dport=port, flags="S")
-                    #result = sr1(pkt, timeout=timeout, verbose=0)
                     s.settimeout(timeout)
                     result = s.connect_ex((ip, int(port)))
 
-                    if result == 0: #and result.haslayer(TCP) and result[TCP].flags == 0x12:
+                    if result == 0:
 
                         with LOCK:
                             if cls.save:
@@ -247,7 +224,6 @@ class Mass_IP_Scanner():
         try: portz  = [int(port) for port in ports.split(',')]
         except Exception: portz = list(ports)
         
-        #console.print("[bold green][*] Thread Pool initilized!")
 
     
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
@@ -277,10 +253,7 @@ class Mass_IP_Scanner():
                     if cls.scanned_ips > 0 and cls.last_scan > 250000:
                         console.print(f"\n[bold red][!] Reinitializing ThreadPool!")
                         cls.scan = False
-                        #time.sleep(5)
                         return False
-
-                #sys.exit()
 
             except KeyboardInterrupt as e:
                 console.print("[bold red][-] Killing ALL Threads...."); cls.scan=False
