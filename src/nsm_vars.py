@@ -5,7 +5,7 @@ from pathlib import Path
 
 from rich.console import Console
 
-LOCK = threading.Lock()
+LOCK = threading.RLock()
 console = Console()
 BASE_DIR = Path(__file__).parent.parent / "database"
 OK_STATUS = (200, 204)

@@ -260,13 +260,14 @@ class Database:
 
         with LOCK:
             CONSOLE.print(f"\n[{c4}][+] Active IP:[/{c4}] [{c2}]{ip}[/{c2}]:{port}")
-            if cls.lookup == "local":
-                get_geo_info_local(ip=ip, db_state=cls, CONSOLE=CONSOLE)
-            elif cls.lookup == "ipinfo":
-                get_geo_info_ipinfo(ip=ip, db_state=cls, CONSOLE=CONSOLE)
 
-            if Database.paths:
-                Database._check_paths(ip=ip, port=port, CONSOLE=CONSOLE)
+        if cls.lookup == "local":
+            get_geo_info_local(ip=ip, db_state=cls, CONSOLE=CONSOLE)
+        elif cls.lookup == "ipinfo":
+            get_geo_info_ipinfo(ip=ip, db_state=cls, CONSOLE=CONSOLE)
+
+        if Database.paths:
+            Database._check_paths(ip=ip, port=port, CONSOLE=CONSOLE)
 
     # WARNING
     @classmethod

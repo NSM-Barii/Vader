@@ -192,6 +192,7 @@ class Mass_IP_Scanner:
                         )
 
                     futures = [f for f in futures if not f.done()]
+                    time.sleep(0.01)
 
                     prefix = (
                         f"[{c1}]Filter: [{c2}]{Database.country}  -  "
