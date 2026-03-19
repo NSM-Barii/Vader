@@ -196,37 +196,6 @@ class Database():
 
 
 
-    server_signatures = [
-        "boa",
-        "goahead",
-        "uc-httpd",
-        "thttpd",
-        "webs",
-        "app-webs",
-        "hikvision",
-        "dahua"
-    ]
-
-
-    www_auth_signatures = [
-        'Basic realm="IP Camera"',
-        'Basic realm="Login"',
-        'Basic realm="WebCam"'
-    ]
-
-
-    html_signatures = [
-        "ip camera",
-        "network camera",
-        "webcam",
-        "live view",
-        "hikvision",
-        "dahua",
-        "foscam",
-        "onvif",
-        "surveillance"
-    ]
-     
 
 
 
@@ -502,32 +471,10 @@ class Database():
     def _check_paths(cls, ip, port, CONSOLE=console, timeout=1, errors=False):
         """This will check path signatures"""
 
-        ip_camera_favicon_hashes = [
-            {"model": "Axis IP Cameras", "hash": "b06e05c4b09e08bae67359c138e73d21"},
-            {"model": "Hikvision IP Cameras", "hash": "2570d07e8d5c5283110b3e23f1ae1817"},
-            {"model": "D-Link Sky IP Cameras", "hash": "c73c4b9efd843dcc7870f7c5be8cf603"},
-            {"model": "Panasonic IP Cameras", "hash": "8031482ee5264c083b1cc9548139b077"},
-            {"model": "Foscam IP Cameras", "hash": "530ca7eb297bf44e53dd13cc7024b42e"},
-            {"model": "Vivotek IP Cameras", "hash": "43242d019fbb25470a7a87a6200ba66a"},
-            {"model": "TP-Link IP Cameras", "hash": "5ae19a987cfae3351652008556fc8814"},
-            {"model": "Logitech Circle", "hash": "4b3de2257f3c1192d661550f2c85b9d8"},
-            {"model": "NETGEAR Arlo", "hash": "6e4a907392fa2924f798405e5cc94db4"},
-            {"model": "Samsung SmartCam", "hash": "f97d4584fccb9de9bc50ef1858d6c7a1"},
-            {"model": "Sony IP Cameras", "hash": "1c26fb09d268982a2d91b50f59e37345"},
-            {"model": "Dahua IP Cameras", "hash": "dc4a40b1a269365bd6b78911d1a4d5d6"},
-            {"model": "Amcrest IP Cameras", "hash": "63b2fc5054c4092e32e2fd8d0d2d6ac6"},
-            {"model": "Toshiba IP Cameras", "hash": "201dcd953eb87f7c6845bba9cc70a7bc"},
-            {"model": "Sricam IP Cameras", "hash": "494ae8e7ec4561bd7b8be2f36f0529c7"},
-            {"model": "Reolink IP Cameras", "hash": "fda7303c0001529aa043c07098324d77"},
-            {"model": "Zmodo IP Cameras", "hash": "6fc3cd798e5d2805c1b942c0b60ea482"}
-        ]
-
-
         if not cls.paths: return
         space = "    "
         c1 = "bold red"
         c2 = "bold yellow"
-        c3 = "bold blue"
         c4 = "bold green"
 
         
@@ -578,18 +525,11 @@ class Database():
         """This method will be used to get our own in house geo ip info"""
 
         # COLORS
-        c1 = "bold red"
-        c2 = "bold yellow"
-        c3 = "bold blue"
         c4 = "bold green"
         c5 = "white"
         space = "    "
 
-        
-
-        
         try:
-            
             if not cls.reader_asn:
                 p1 = "geo_lookup"
                 path_asn  = str(Path(__file__).parent.parent / "database" /  p1 / "L-ASN" / "L-ASN.mmdb" )
@@ -635,12 +575,9 @@ class Database():
 
         # COLORS
         c1 = "bold red"
-        c2 = "bold yellow"
-        c3 = "bold blue"
         c4 = "bold green"
         c5 = "white"
         space = "    "
-        
 
         if cls.api_key_ipinfo:
 
@@ -687,7 +624,6 @@ class Database():
 
         except Exception as e:
             cls.errors += 1
-            #CONSOLE.print(f"[bold red][-] Exception Error:[bold yellow] {e}")
 
 
     @classmethod
@@ -752,8 +688,6 @@ class Database():
 
 
 
-        #path = str(Path(__file__).parent.parent / "database" / "ip_blocks" / "Canada.txt")
-     
         path = str(Database.validate_country(country=country, CONSOLE=CONSOLE))
         blocks = []
 
@@ -780,25 +714,11 @@ class Database():
         """This is going to be cool // pass the country and then filter through said country for asns"""
 
 
-        # TESTING THIS
-        # sudo venv/bin/python main.py --country Iran --asn 57577,51168,200376,52196 -p 80,443,8080,8443,22,23,502,102,20000,8000,47808,1911 --save --geo local -t 750
-        # 5.202.86.0/24, 91.233.56.0/24, 91.233.59.0/24, 91.233.58.0/24, 91.233.57.0/24, 195.20.136.0/24
-        # web panels, remote access, SCADA/ICS protocols
-
-        # ST. LUCIA TEST
-        # sudo venv/bin/python main.py --country "Saint Lucia" --asn 33582,395561,399724 -p 80,443,8080,8443,22,23,21,3389 --save --geo local -t 250
-        # web, SSH, Telnet, FTP, RDP
-
-        
-
         # COLORS
         c1 = "bold red"
-        c2 = "bold yellow"
-        c3 = "bold blue"
         c4 = "bold green"
         c5 = "white"
         c6 = "yellow"
-        space = "    "
         total_blocks = []
 
 
@@ -879,7 +799,6 @@ class Database():
                         )
             
 
-            #CONSOLE.print(f"\n\n[{c1}][+] Total IP Blocks:[{c6}] {len(total_blocks)}")
             return base, total_blocks
     
         
@@ -915,21 +834,15 @@ class Database():
                 if not country: continue
                 safe_country = country.replace(" ", "_")
                 
-                #subprocess.run(f"curl {url} -o  {country}.txt")
-                
                 response = requests.get(url=url)
                 
                 if response.status_code in [200, 204]:
                     with open(f"{safe_country}.txt", "w") as file: file.write(str(response.text))
                     console.print(f"[bold green][+] Successfully downloaded:[bold yellow] {cls.country}/{cls.zone} <-> {url}")
                 
-                #time.sleep(0.01)
-
-
-        
         except Exception as e: console.print(f"[bold red][-] Exception Error:[bold yellow] {e}")
-    
-   
+
+
     @classmethod
     def _download_asns_within_each_country(cls):
         """This will be used to download asns for each domain within a country"""
@@ -1057,7 +970,6 @@ class Database():
         """This will be for getting total ip in ip block(s)"""
 
 
-        #blocks = Database.get_ip_block(country=country)
         total = 0
 
 
@@ -1080,13 +992,8 @@ class Database():
 
 
         # COLORS
-        c1 = "bold red"
         c2 = "bold yellow"
-        c3 = "bold blue"
         c4 = "bold green"
-        c5 = "white"
-        space = "    "
-
 
         with LOCK:
             CONSOLE.print(f"\n[{c4}][+] Active IP:[/{c4}] [{c2}]{ip}[/{c2}]:{port}")

@@ -162,7 +162,7 @@ class Main():
 
 
 
-    c1 = "red"; c2 = "bold green"; c3 = "bold blue"; c4 = "bold yellow"
+    c1 = "red"; c4 = "bold yellow"
 
     stats = (
         f"[{c1}][+] Port(s):[{c4}] {port}"
