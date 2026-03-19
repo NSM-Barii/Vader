@@ -5,16 +5,27 @@
 import argparse, sys
 
 
-# UI IMPORTS
-from rich.console import Console
-from rich.panel import Panel
-
-console = Console()
-
-
 # NSM IMPORTS
+from nsm_vars import (
+    console,
+    CRITICAL_INFRASTRUCTURE_PORTS,
+    DATABASE_PORTS,
+    CAMERA_PORTS,
+    ROUTER_PORTS,
+    NAS_PORTS,
+    REMOTE_PORTS,
+    IOT_PORTS,
+    PATHS_CAMERA,
+    PATHS_ROUTER,
+    PATHS_NAS,
+)
 from nsm_scanner import Mass_IP_Scanner
 from nsm_database import Database
+from nsm_filesaver import File_Saver
+
+
+# UI IMPORTS
+from rich.panel import Panel
 
 
 class Main:
@@ -166,33 +177,36 @@ class Main:
     Mass_IP_Scanner.save_name = save_name
     Mass_IP_Scanner.bloom_size = bloom_size
 
+    # SET FILE_SAVER COUNTRY
+    File_Saver.country = country
+
     # ASSIGN PRESETS
     if iot:
-        port = Database.IOT_PORTS
+        port = IOT_PORTS
     elif nas:
-        port = Database.NAS_PORTS
-        Database.paths = Database.paths_nas
+        port = NAS_PORTS
+        Database.paths = PATHS_NAS
     elif router:
-        port = Database.ROUTER_PORTS
-        Database.paths = Database.paths_router
+        port = ROUTER_PORTS
+        Database.paths = PATHS_ROUTER
     elif remote:
-        port = Database.REMOTE_PORTS
+        port = REMOTE_PORTS
     elif camera:
-        port = Database.CAMERA_PORTS
-        Database.paths = Database.paths_camera
+        port = CAMERA_PORTS
+        Database.paths = PATHS_CAMERA
     elif database:
-        port = Database.DATABASE_PORTS
+        port = DATABASE_PORTS
 
     if port == "1":
-        port = Database.CRITICAL_INFRASTRUCTURE_PORTS
+        port = CRITICAL_INFRASTRUCTURE_PORTS
 
     if paths:
         if paths == "nas":
-            Database.paths = Database.paths_nas
+            Database.paths = PATHS_NAS
         elif paths == "router":
-            Database.paths = Database.paths_router
+            Database.paths = PATHS_ROUTER
         elif paths == "camera":
-            Database.paths = Database.paths_camera
+            Database.paths = PATHS_CAMERA
 
     Database.lookup = lookup
     Database.api_key_ipinfo = api_key_ipinfo

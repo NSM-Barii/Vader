@@ -2,7 +2,6 @@
 
 
 # UI IMPORTS
-from rich.console import Console
 from rich.panel import Panel
 from rich.live import Live
 
@@ -12,16 +11,15 @@ import ipaddress, socket
 
 
 # ETC IMPORTS
-import time, random, threading
+import time, random
 from pybloom_live import BloomFilter
 from concurrent.futures import ThreadPoolExecutor
 
 
 # NSM IMPORTS
-from nsm_database import File_Saver, Database
-
-console = Console()
-LOCK = threading.Lock()
+from nsm_vars import LOCK, console
+from nsm_database import Database
+from nsm_filesaver import File_Saver
 
 
 class Mass_IP_Scanner:
