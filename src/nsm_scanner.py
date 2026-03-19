@@ -222,7 +222,7 @@ class Mass_IP_Scanner():
                             cls.current_ips = []
 
                     if cls.scanned_ips > 0 and cls.last_scan > 250000:
-                        console.print(f"\n[bold red][!] Reinitializing ThreadPool!")
+                        console.print("\n[bold red][!] Reinitializing ThreadPool!")
                         cls.scan = False
                         return False
 

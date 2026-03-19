@@ -593,7 +593,7 @@ class Database():
                 CONSOLE.print(f" [{c1}]{space}[-] IPInfo Lookup Failed :[{c5}] {text}")
         
 
-        except Exception as e:
+        except Exception:
             cls.errors += 1
 
 
@@ -606,7 +606,7 @@ class Database():
         path_country   = path_ip_blocks / f"{country}.txt"
 
         if not path_ip_blocks.exists():
-            CONSOLE.print(f"\n[bold red][-] Seems like your missing the ip_blocks directory, please check Documentation for fix")
+            CONSOLE.print("\n[bold red][-] Seems like your missing the ip_blocks directory, please check Documentation for fix")
             sys.exit()
 
         if path_country.exists():
@@ -614,7 +614,7 @@ class Database():
             cls.country = country
             return path_country
 
-        CONSOLE.print(f"\n[bold red][-] Invalid country given, please check documentation if your having trouble finding your country")
+        CONSOLE.print("\n[bold red][-] Invalid country given, please check documentation if your having trouble finding your country")
         sys.exit()
   
 
@@ -643,7 +643,7 @@ class Database():
             return path_asn, valid_asn
         
         
-        CONSOLE.print(f"\n[bold red][-] Seems like your missing the asns directory, please check Documentation for fix")
+        CONSOLE.print("\n[bold red][-] Seems like your missing the asns directory, please check Documentation for fix")
         sys.exit()
 
 
@@ -709,7 +709,7 @@ class Database():
 
 
             with open(path_asn, "r") as file: data = json.load(file)
-            CONSOLE.print(f"[yellow][+] Pulling blocks <-- asn(s), Please standby\n") 
+            CONSOLE.print("[yellow][+] Pulling blocks <-- asn(s), Please standby\n") 
                 
 
 
@@ -1015,7 +1015,7 @@ class File_Saver():
 
 
             with open(str(cls.path), "a") as file: file.write(clean)
-            if verbose: CONSOLE.print(f"[bold green][+] Successfully pushed new info")
+            if verbose: CONSOLE.print("[bold green][+] Successfully pushed new info")
 
         
         except FileNotFoundError as e:
