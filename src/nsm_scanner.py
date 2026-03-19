@@ -53,7 +53,8 @@ class Mass_IP_Scanner():
 
 
     # IPS  // THESE ARE USED BY cls._track_ip_blocks() and cls._generate_random_ip()
-    ips_from_block   = []
+    _block_iter      = None
+    _block_remaining = 0
     current_block    = False
     bf_all = None
     total_ips        = 0
@@ -70,7 +71,7 @@ class Mass_IP_Scanner():
         try:
 
 
-            if not cls.ips_from_block or len(cls.ips_from_block) == 0:
+            if cls._block_remaining <= 0:
 
 
                 if not cls.blocks:
@@ -105,13 +106,15 @@ class Mass_IP_Scanner():
 
                 cls.current_block = cls.blocks.pop(0)
                 network = ipaddress.IPv4Network(cls.current_block); cls.total_ips += network.num_addresses
-                cls.ips_from_block = [ip for ip in network]
+                cls._block_iter = iter(network)
+                cls._block_remaining = network.num_addresses
 
                 console.print(f"\n[bold green][*] Current IPv4 Block:[yellow] {cls.current_block}  -  IPv4 Addresses: {network.num_addresses}")
                 time.sleep(1)
 
 
-            random_ip = cls.ips_from_block.pop(0)
+            random_ip = next(cls._block_iter)
+            cls._block_remaining -= 1
 
             cls.scanned_ips += 1; cls.last_scan += 1
 
