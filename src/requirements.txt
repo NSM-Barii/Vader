@@ -1,10 +1,6 @@
-scapy
 ipaddress
 rich
-pyfiglet
 requests
-pymongo
-
 mmh3
 geoip2
 pybloom_live
