@@ -477,7 +477,7 @@ class Database():
 
    
     @classmethod
-    def _check_paths(cls, ip, port, CONSOLE=console, timeout=1, errors=False):
+    def _check_paths(cls, ip, port, CONSOLE=console, timeout=3, errors=False):
         """This will check path signatures"""
 
         ip_camera_favicon_hashes = [
@@ -1087,8 +1087,8 @@ class Database():
             CONSOLE.print(f"\n[{c4}][+] Active IP:[/{c4}] [{c2}]{ip}[/{c2}]:{port}")
             if   cls.lookup == "local":  Database._get_geo_info_local(ip=ip, CONSOLE=CONSOLE, verbose=False)
             elif cls.lookup == "ipinfo": Database._get_geo_info_ipinfo(ip=ip, CONSOLE=CONSOLE)
-        
-            if Database.paths: Database._check_paths(ip=ip, port=port, CONSOLE=CONSOLE)
+
+        if Database.paths: Database._check_paths(ip=ip, port=port, CONSOLE=CONSOLE)
 
 
 
