@@ -66,9 +66,10 @@ class Main():
     parser.add_argument("--router", action="store_true", help="Scan for routers and network infrastructure (admin panels, SSH, Telnet, TR-069).")
     parser.add_argument("--remote", action="store_true", help="Scan for remote access services (RDP, VNC, SSH, FTP).")
     parser.add_argument("--database", action="store_true", help="Scan for open databases (3306, 5432, 27017, 6379, 9200).")
+    parser.add_argument("--flock",  action="store_true", help="Scan for exposed Flock Safety LPR camera admin panels (port 8900, Verizon ASN 6167).")
     
     parser.add_argument("--show-all", action="store_true", help="Show all active IPS")
-    parser.add_argument("--paths",  help="Manually set path for directory bruteforcing (nas, router, camera).")
+    parser.add_argument("--paths",  help="Manually set path for directory bruteforcing (nas, router, camera, flock).")
 
 
     args = parser.parse_args()
@@ -93,11 +94,13 @@ class Main():
     save           = args.save        or False
     save_name      = args.x           or False
 
+
     # WARNING
     if not country:
         console.print("\n[bold red][!] WARNING:[/bold red] [bold yellow]Scanning without --country will use a 100M BloomFilter limit.")
         console.print("[bold yellow]    After 100M IPs, duplicates may be scanned. Use --country for memory-efficient scanning.")
         console.print("[bold yellow]    Or increase with --bloom-size (e.g., --bloom-size 500000000) but this uses more RAM.\n")
+
 
     # PRESET OPTIONS
     iot      = args.iot        or False
@@ -106,12 +109,21 @@ class Main():
     remote   = args.remote     or False
     camera   = args.camera     or False
     database = args.database   or False
+    flock    = args.flock      or False
 
 
     # FOR PRESETS    
     paths          = args.paths       or False
     all            = args.show_all    or False
     
+
+    # FLOCK SAFETY PRESET — auto-sets country, ASN, save
+    if flock:
+        country   = "United_States"
+        asn       = "6167"
+        save      = True
+        save_name = "flock_cameras.txt"
+
 
     # IRANIAN CRITICAL INFRASTRUCTURE ASN SHORTCUTS (must come before port assignment)
     # TIER 1: CRITICAL INFRASTRUCTURE (Energy, Power Grid, Major Telecom, Transport)
@@ -155,6 +167,7 @@ class Main():
     elif remote:   port = Database.REMOTE_PORTS
     elif camera:   port = Database.CAMERA_PORTS   ; Database.paths = Database.paths_camera
     elif database: port = Database.DATABASE_PORTS
+    elif flock:    port = Database.FLOCK_PORTS    ; Database.paths = Database.paths_flock
 
     if port == "1": port = Database.CRITICAL_INFRASTRUCTURE_PORTS
 
@@ -163,6 +176,7 @@ class Main():
         if   paths in ["nas"]:    Database.paths = Database.paths_nas
         elif paths in ["router"]: Database.paths = Database.paths_router
         elif paths in ["camera"]: Database.paths = Database.paths_camera
+        elif paths in ["flock"]:  Database.paths = Database.paths_flock
 
 
     Database.ports  = port

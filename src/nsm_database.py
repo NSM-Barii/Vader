@@ -117,10 +117,17 @@ class Database():
         8883,   # Secure MQTT
         5683,   # CoAP
         5353    # mDNS (mostly LAN discovery)
-    ]   
+    ]
+
+    FLOCK_PORTS = [
+        8900,   # Flock admin portal (no auth)
+        8554,   # RTSP live feed
+        554,    # RTSP live (alternate)
+        8000    # ONVIF service
+    ]
 
 
-   
+
     paths_camera = [
          "/onvif/device_service",
         "/snapshot.jpg",
@@ -148,6 +155,12 @@ class Database():
         "/auth.cgi",               # Synology auth endpoint (presence signal)
         "/cgi-bin/",               # QNAP/Synology patterns
         "/admin/",                 # generic NAS panels
+    ]
+
+    paths_flock = [
+        "/metadata",               # device metadata, returns JSON
+        "/videoAdmin",             # video file listing dashboard
+        "/onvif/device_service",   # ONVIF presence check
     ]
 
 
@@ -500,7 +513,7 @@ class Database():
 
             try:
 
-                url = f"http://{ip}{path}"
+                url = f"http://{ip}:{port}{path}"
 
                 response = requests.get(url=url, timeout=timeout)
                 headers = response.headers
@@ -869,7 +882,6 @@ class Database():
 
 
 
-
     # WARNING
     @classmethod
     def _download_ip_blocks_for_each_country(cls):
@@ -1088,7 +1100,7 @@ class File_Saver():
 
 
     path = False
-    ips_saved = []
+    ips_saved = set()
 
 
 
@@ -1124,9 +1136,11 @@ class File_Saver():
     
         try:
             with LOCK:
+                if not data: return False
                 ips = []
                 for ip in data:
-                    if ip not in cls.ips_saved: ips.append(ip); cls.ips_saved.append(ip)
+                    if not ip: return False
+                    if ip not in cls.ips_saved: ips.append(ip); cls.ips_saved.add(ip)
 
                 clean = "\n".join(ips) + "\n"
 
